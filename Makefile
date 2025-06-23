@@ -4,3 +4,6 @@ start up:
 init:
 	python3 -m venv venv && . venv/bin/activate && pip install --upgrade pip && pip install -r requirements.txt
 	@if [ ! -f .env ] && [ -f .env.example ]; then cp .env.example .env; fi
+
+clean:
+	rm -rf venv __pycache__ *.pyc *.pyo *.log

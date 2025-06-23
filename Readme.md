@@ -46,3 +46,8 @@ make start
 - Crée l’environnement virtuel si nécessaire
 - Installe les dépendances si besoin
 - Lance le serveur Flask (server.py)
+
+```bash
+make clean
+```
+- Supprime l’environnement virtuel, les fichiers compilés et temporaires pour repartir sur une base propre.
