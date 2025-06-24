@@ -100,3 +100,35 @@ def profile():
         if user:
             return render_template("user/profile.html", user=user)
     return redirect(url_for('login'))
+
+def edit_profile():
+    user_id = session.get("user_id")
+    if not user_id:
+        return redirect(url_for('login'))
+    if request.method == "POST":
+        nom = request.form.get("nom")
+        prénom = request.form.get("prénom")
+        email = request.form.get("email")
+        âge = request.form.get("âge")
+        poids = request.form.get("poids")
+        genre = request.form.get("genre")
+        current_password = request.form.get("current_password")
+        new_password = request.form.get("new_password")
+        with mysql.connection.cursor() as cur:
+            user = User.get_by_id(cur, user_id)
+            if not user or user.password != hash_password(current_password):
+                return render_template("user/profile.html", user=user, error="Mot de passe actuel incorrect.")
+            if new_password:
+                password = hash_password(new_password)
+            else:
+                password = user.password
+            try:
+                User.update_profile(cur, user_id, nom, prénom, email, âge, poids, genre, password)
+                mysql.connection.commit()
+                return render_template("user/profile.html", user=User.get_by_id(cur, user_id), success="Profil mis à jour avec succès.")
+            except Exception as e:
+                return render_template("user/profile.html", user=user, error="Erreur lors de la mise à jour du profil.")
+    else:
+        with mysql.connection.cursor() as cur:
+            user = User.get_by_id(cur, user_id)
+        return render_template("user/profile.html", user=user)

@@ -5,16 +5,26 @@
 {% block content %}
 <a href="{{ url_for('index') }}">Retour à l'accueil</a>
 <a href="{{ url_for('logout_route') }}">Se déconnecter</a>
+
+{% if error %}
+    <div class="error">{{ error }}</div>
+{% endif %}
+{% if success %}
+    <div class="success">{{ success }}</div>
+{% endif %}
+
 <h2>Profil utilisateur</h2>
-<ul>
-    <li><strong>Nom :</strong> {{ user.nom }}</li>
-    <li><strong>Prénom :</strong> {{ user.prénom }}</li>
-    <li><strong>Email :</strong> {{ user.email }}</li>
-    <li><strong>Âge :</strong> {{ user.âge }}</li>
-    <li><strong>Poids :</strong> {{ user.poids }} kg</li>
-    <li><strong>Genre :</strong> {{ user.genre }}</li>
-    <li><strong>Date de création :</strong> {{ user.create_dt }}</li>
-</ul>
+<form method="post" action="{{ url_for('edit_profile_route') }}">
+    <label>Nom : <input type="text" name="nom" value="{{ user.nom }}" required></label><br>
+    <label>Prénom : <input type="text" name="prénom" value="{{ user.prénom }}" required></label><br>
+    <label>Email : <input type="email" name="email" value="{{ user.email }}" required></label><br>
+    <label>Âge : <input type="number" name="âge" value="{{ user.âge }}" required></label><br>
+    <label>Poids : <input type="number" name="poids" value="{{ user.poids }}" required></label><br>
+    <label>Genre : <input type="text" name="genre" value="{{ user.genre }}" required></label><br>
+    <label>Mot de passe actuel : <input type="password" name="current_password" required></label><br>
+    <label>Nouveau mot de passe : <input type="password" name="new_password"></label><br>
+    <button type="submit">Enregistrer les modifications</button>
+</form>
 {% endblock %}
 
 

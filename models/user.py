@@ -60,3 +60,10 @@ class User:
     @staticmethod
     def delete(cursor, id_user):
         cursor.execute("DELETE FROM utilisateur WHERE id_user = %s", (id_user,))
+
+    @staticmethod
+    def update_profile(cursor, id_user, nom, prénom, email, âge, poids, genre, password):
+        cursor.execute(
+            "UPDATE utilisateur SET nom=%s, prénom=%s, email=%s, âge=%s, poids=%s, genre=%s, password=%s WHERE id_user=%s",
+            (nom, prénom, email, âge, poids, genre, password, id_user)
+        )
