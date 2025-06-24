@@ -36,7 +36,7 @@
             {% else %}
             <p>Bienvenue ploucos, fais toi un compte !</p>
             {% endif %}
-            <a href="/login">
+            <a href="{{ url_for('profile_route') }}">
                 <img src="../static/images/user.png" alt="User Icon" id="user-icon"></a>
         </div>
     </nav>
