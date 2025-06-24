@@ -3,6 +3,9 @@
 {% block title %}Fésoif - Login{% endblock %}
 
 {% block content %}
+{% if error %}
+  <div class="alert alert-danger">{{ error }}</div>
+{% endif %}
 <form action="/login" method="post">
     <h1>Connexion</h1>
     <label for="email">email</label>

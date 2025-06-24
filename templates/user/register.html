@@ -3,6 +3,9 @@
 {% block title %}Fésoif - Inscription{% endblock %}
 
 {% block content %}
+{% if error %}
+  <div class="alert alert-danger">{{ error }}</div>
+{% endif %}
 <form action="/register" method="post">
     <h2>Inscription</h2>
     <div class="form-group">
