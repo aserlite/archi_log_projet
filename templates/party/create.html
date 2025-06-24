@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Fésoif - créer la fête{% endblock %}
+
+{% block content %}
+<form action="/create_party" method="post">
+    <h2>Créer une fête</h2>
+    <div class="form-group">
+        <label for="name">Nom de la fête :</label>
+        <input type="text" id="name" name="name" class="form-control" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Créer la fête</button>
+</form>
+{% endblock %}

@@ -4,37 +4,51 @@
 
 {% block content %}
 {% if error %}
-  <div class="alert alert-danger">{{ error }}</div>
+<div class="alert alert-danger">{{ error }}</div>
 {% endif %}
+<link rel="stylesheet" href="../static/styles/style_register.css">
 <form action="/register" method="post">
-    <h2>Inscription</h2>
-    <div class="form-group">
-        <label for="nom">Nom :</label>
-        <input type="text" id="nom" name="nom" required>
+  <h2>Inscription</h2>
+  <div class="form-group">
+    <label for="nom">Nom :</label>
+    <input type="text" id="nom" name="nom" required>
 
-        <label for="prénom">Prénom :</label>
-        <input type="text" id="prénom" name="prénom" required>
+    <label for="prénom">Prénom :</label>
+    <input type="text" id="prénom" name="prénom" required>
 
-        <label for="email">Email :</label>
-        <input type="email" id="email" name="email" required>
+    <label for="email">Email :</label>
+    <input type="email" id="email" name="email" required>
 
-        <label for="password">Mot de passe :</label>
-        <input type="password" id="password" name="password" required>
+    <label for="password">Mot de passe :</label>
+    <input type="password" id="password" name="password" required>
 
-        <label for="confirm">Confirmer le mot de passe :</label>
-        <input type="password" id="confirm" name="confirm" required>
+    <label for="confirm">Confirmer le mot de passe :</label>
+    <input type="password" id="confirm" name="confirm" required>
 
-        <label for="âge">Âge :</label>
-        <input type="number" id="âge" name="âge" min="0" required>
+    <label for="âge">Âge :</label>
+    <input type="number" id="âge" name="âge" min="0" required>
 
-        <label for="poids">Poids (kg) :</label>
-        <input type="number" id="poids" name="poids" min="0" step="any" required>
+    <label for="poids">Poids (kg) :</label>
+    <input type="number" id="poids" name="poids" min="0" step="any" required>
 
-        <label for="taille">Taille (cm) :</label>
-        <input type="number" id="taille" name="taille" min="0" step="any" required>
+    <label>Genre :</label>
+    <label class="radio">
+      <input name="radio" type="radio" checked>
+      <span>Homme</span>
+    </label>
+    <label class="radio">
+      <input name="radio" type="radio">
+      <span>Femme</span>
+    </label>
+    <label class="radio">
+      <input name="radio" type="radio">
+      <span>Non spécifié</span>
+    </label>
 
-        <button type="submit">S'inscrire</button>
-        <p>Déjà inscrit ? <a href="/login">Connectez-vous ici</a>.</p>
-    </div>
+    <button type="submit">S'inscrire</button>
+  </div>
 </form>
+
+<p>Déjà inscrit ? <a href="/login">Connectez-vous ici</a>.</p>
+
 {% endblock %}

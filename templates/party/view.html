@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Fésoif - {{ party.nom }}{% endblock %}
+
+{% block content %}
+<h2>{{ party.nom }}</h2>
+<ul>
+    <li><strong>Date :</strong> {{ party.date }}</li>
+    <li><strong>Code d'invitation :</strong> {{ party.code }}</li>
+</ul>
+
+{% if party.status == 'ongoing' %}
+{% if party.id_organisateur == session['user_id'] %}
+<form action="{{ url_for('close_party_route', party_id=party.id_soiree) }}" method="post">
+    <button type="submit" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir fermer la fête ?')">
+        Fermer la fête
+    </button>
+</form>
+{% else %}
+<p>La fête est en cours !</p>
+{% endif %}
+{% else %}
+<p>La fête est terminée.</p>
+{% endif %}
+
+{% endblock %}

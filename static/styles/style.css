@@ -1,0 +1,46 @@
+#cell-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 0.5rem;
+    padding: 1rem;
+}
+
+.cell {
+    cursor: pointer;
+    background-color: #2b2b2b;
+    color: #fff;
+    padding: 1rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+#cell-soiree{
+    min-height: 8rem;
+}
+
+#cell-boissons{
+    min-height: 8rem;
+    width: 8rem;
+}
+
+
+
+
+.cell:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.3);
+}
+
+.cell h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.cell p {
+    font-size: 0.9rem;
+    color: #bbb;
+}
