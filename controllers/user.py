@@ -15,14 +15,14 @@ def register():
             return render_template("user/register.html", error="Les mots de passe ne correspondent pas")
         âge = request.form.get("âge")
         poids = request.form.get("poids")
-        taille = request.form.get("taille")
+        genre = request.form.get("genre")
         password = hash_password(password)
         session_token = uuid.uuid4().hex
         try:
             with mysql.connection.cursor() as cur:
                 cur.execute(
-                    "INSERT INTO utilisateur (nom, prénom, email, password, âge, poids, taille, session_token) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
-                    (nom, prénom, email, password, âge, poids, taille, session_token)
+                    "INSERT INTO utilisateur (nom, prénom, email, password, âge, poids, genre, session_token) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
+                    (nom, prénom, email, password, âge, poids, genre, session_token)
                 )
                 mysql.connection.commit()
                 cur.execute("SELECT id_user FROM utilisateur WHERE email = %s", (email,))
