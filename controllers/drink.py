@@ -38,3 +38,13 @@ def single_drink(drink_id):
             return render_template('drinks/single.html', drink=drink.__dict__)
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+def search_drinks():
+    query = request.args.get('q', '')
+    if not query:
+        return jsonify({'drinks': []})
+    with mysql.connection.cursor() as cur:
+        cur.execute("SELECT id_boisson, nom FROM boisson WHERE nom LIKE %s LIMIT 10", (f"%{query}%",))
+        drinks = [{'id': row[0], 'nom': row[1]} for row in cur.fetchall()]
+    return jsonify({'drinks': drinks})
+

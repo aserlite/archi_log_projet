@@ -11,33 +11,38 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Hammersmith+One&family=Lilita+One&display=swap"
-        rel="stylesheet">
+          rel="stylesheet">
 
     <!-- police hammersmith one -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Hammersmith+One&family=Lilita+One&display=swap"
-        rel="stylesheet">
+          rel="stylesheet">
 </head>
 
 <body>
-    <header>
-        <nav>
-            <h1><a href="/">drunk.</a></h1>
-            <div id="user">
-                <p>Nom prénom</p>
-                <img src="../static/images/user.png" alt="User Icon" id="user-icon">
-            </div>
-        </nav>
+<header>
+    <nav>
+        <h1><a href="/">drunk.</a></h1>
+        <div id="user">
+            {% if user %}
+            <p>Bienvenue, {{ user.prénom }} !</p>
+            {% else %}
+            <p>Bienvenue ploucos, fais toi un compte !</p>
+            {% endif %}
+            <a href="/login">
+                <img src="../static/images/user.png" alt="User Icon" id="user-icon"></a>
+        </div>
+    </nav>
 
-    </header>
+</header>
 
-    <main>
-        {% block content %}{% endblock %}
-    </main>
-    <footer>
-        <p>&copy; 2024 Fésoif</p>
-    </footer>
+<main>
+    {% block content %}{% endblock %}
+</main>
+<footer>
+    <p>&copy; 2024 Fésoif</p>
+</footer>
 </body>
 
 </html>

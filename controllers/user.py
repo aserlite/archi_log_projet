@@ -61,14 +61,17 @@ def login():
             return jsonify({"error": str(e)}), 500
     return render_template("user/login.html")
 
+
 def logout():
     session.pop("user_id", None)
     session.pop("session_token", None)
     return redirect(url_for('index'))
 
+
 def hash_password(password):
     import hashlib
     return hashlib.sha256(password.encode()).hexdigest()
+
 
 def is_authenticated():
     user_id = session.get("user_id")
@@ -81,6 +84,23 @@ def is_authenticated():
         if row and row[0] == session_token:
             return True
     return False
+
+
+def get_user_by_id(user_id):
+    with mysql.connection.cursor() as cur:
+        cur.execute("SELECT * FROM utilisateur WHERE id_user = %s", (user_id,))
+        row = cur.fetchone()
+        if row:
+            return User(*row)
+    return None
+
+
+def get_current_user():
+    user_id = session.get("user_id")
+    if not user_id:
+        return None
+    return get_user_by_id(user_id)
+
 
 def profile():
     user_id = session.get("user_id")
