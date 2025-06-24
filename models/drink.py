@@ -18,11 +18,20 @@ class Drink:
         return [Drink(*row) for row in rows]
 
     @staticmethod
+    def get_by_id(cursor, drink_id):
+        cursor.execute("SELECT * FROM boisson WHERE id_boisson = %s", (drink_id,))
+        row = cursor.fetchone()
+        if row:
+            return Drink(*row)
+        return None
+
+    @staticmethod
     def create(cursor, nom, ingredients, alcool=True, degre=None, description=None):
         cursor.execute(
             "INSERT INTO boisson (nom, ingrédients, alcool, degré, description) VALUES (%s, %s, %s, %s, %s)",
             (nom, ingredients, alcool, degre, description)
         )
+        return cursor.lastrowid
 
     @staticmethod
     def delete(cursor, id_boisson):
