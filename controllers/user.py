@@ -46,9 +46,13 @@ def login():
                 row = cur.fetchone()
                 if row:
                     user = User(*row)
+                    debug_data = user.__dict__.copy()
+                    debug_data["hashed_password"] = hashed_password
+                    return jsonify(debug_data)
                     if user.password == hashed_password:
                         session_token = uuid.uuid4().hex
-                        cur.execute("UPDATE utilisateur SET session_token = %s WHERE id_user = %s", (session_token, user.id_user))
+                        cur.execute("UPDATE utilisateur SET session_token = %s WHERE id_user = %s",
+                                    (session_token, user.id_user))
                         mysql.connection.commit()
                         session["user_id"] = user.id_user
                         session["session_token"] = session_token
