@@ -1,10 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
 
-</body>
-</html>
+{% block title %}Fésoif - ajout boisson{% endblock %}
+
+{% block content %}
+<a href="{{ url_for('drinks') }}">Retour à la liste des boissons</a>
+
+<form action="/drinks/create" method="post">
+    <h1>Ajouter une boisson</h1>
+    <label for="alcool">Alcool:</label>
+    <input type="checkbox" id="alcool" name="alcool" checked required><br><br>
+
+    <label for="nom">Nom:</label>
+    <input type="text" id="nom" name="nom" required><br><br>
+
+    <label for="degre">% Alcool:</label>
+    <input type="number" id="degre" name="degre" step="0.1" required><br><br>
+
+    <label for="ingredients">Ingrédients:</label>
+    <textarea id="ingredients" name="ingredients" required></textarea><br><br>
+
+    <label for="description">Description:</label>
+    <textarea id="description" name="description"></textarea><br><br>
+
+    <button type="submit">Ajouter</button>
+</form>
+
+{% endblock %}

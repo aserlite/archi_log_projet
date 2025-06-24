@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Fésoif - Boissons{% endblock %}
+
+{% block content %}
+<h2>Liste des Boire</h2>
+<table border="1">
+    <thead>
+    <tr>
+        <th>Alcool</th>
+        <th>Nom</th>
+        <th>% alcool</th>
+        <th>Ingrédients</th>
+        <th>Description</th>
+        <th>Page de la boisson</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for drink in drinks %}
+    <tr>
+        <td>{{ drink.alcool }}</td>
+        <td>{{ drink.nom }}</td>
+        <td>{{ drink.degre }}</td>
+        <td>{{ drink.ingredients }}</td>
+        <td>{{ drink.description }}</td>
+        <td><a href="{{ url_for('single_drink_route', drink_id=drink.id_boisson) }}">Voir</a></td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<h2>Ajouter une Boisson</h2>
+<a href="{{ url_for('create_drink_route') }}">Ajouter une nouvelle boisson</a>
+
+
+{% endblock %}
