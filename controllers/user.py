@@ -70,10 +70,6 @@ def hash_password(password):
     import hashlib
     return hashlib.sha256(password.encode()).hexdigest()
 
-def unhash_password(hashed_password):
-    import hashlib
-    return hashlib.sha256(hashed_password.decode()).hexdigest()
-
 def is_authenticated():
     user_id = session.get("user_id")
     session_token = session.get("session_token")
