@@ -46,3 +46,34 @@ class Party:
         if rows:
             return [Party(*row) for row in rows]
         return None
+
+    @staticmethod
+    def get_id_for_user(cursor, user_id):
+        cursor.execute("""
+            SELECT id_soiree
+            FROM soiree
+            WHERE (id_organisateur = %s OR id_soiree IN (
+                SELECT id_soiree FROM invitation WHERE id_user = %s
+            )) AND status = 'ongoing' LIMIT 1
+        """, (user_id, user_id))
+        result = cursor.fetchone()
+        return result[0] if result else None
+
+    @staticmethod
+    def is_user_invited(cursor, party_id, user_id):
+        cursor.execute("""
+            SELECT 1 FROM invitation WHERE id_soiree = %s AND id_user = %s
+        """, (party_id, user_id))
+        return cursor.fetchone() is not None
+
+    @staticmethod
+    def add_invitation(cursor, party_id, user_id):
+        cursor.execute("""
+            INSERT INTO invitation (id_soiree, id_user) VALUES (%s, %s)
+        """, (party_id, user_id))
+
+    @staticmethod
+    def close(cursor, party_id):
+        cursor.execute("""
+            UPDATE soiree SET status = 'finished' WHERE id_soiree = %s
+        """, (party_id,))

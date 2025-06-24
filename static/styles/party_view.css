@@ -1,0 +1,21 @@
+#drink-suggestions .drink-suggestion {
+    display: block;
+    padding: 8px 12px;
+    border-radius: 6px;
+    margin-bottom: 4px;
+    transition: background 0.2s;
+    cursor: pointer;
+    border: 1px solid #e0e0e0;
+}
+
+#drink-suggestions .drink-suggestion:nth-child(odd) {
+    background: #f8f9fa;
+}
+
+#drink-suggestions .drink-suggestion:nth-child(even) {
+    background: #e3e6f0;
+}
+
+#drink-suggestions .drink-suggestion:hover {
+    background: #cce5ff;
+}
