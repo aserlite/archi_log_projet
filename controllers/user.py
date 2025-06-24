@@ -12,7 +12,7 @@ def register():
         password = request.form.get("password")
         confirm = request.form.get("confirm")
         if password != confirm:
-            return render_template("users/register.html", error="Les mots de passe ne correspondent pas")
+            return render_template("user/register.html", error="Les mots de passe ne correspondent pas")
         âge = request.form.get("âge")
         poids = request.form.get("poids")
         taille = request.form.get("taille")
@@ -32,7 +32,7 @@ def register():
             return redirect(url_for('index'))
         except Exception as e:
             return jsonify({"error": str(e)}), 500
-    return render_template("users/register.html")
+    return render_template("user/register.html")
 
 
 def login():
@@ -54,12 +54,12 @@ def login():
                         session["session_token"] = session_token
                         return redirect(url_for('index'))
                     else:
-                        return render_template("users/login.html", error="Mot de passe incorrect")
+                        return render_template("user/login.html", error="Mot de passe incorrect")
                 else:
-                    return render_template("users/login.html", error="Utilisateur non trouvé")
+                    return render_template("user/login.html", error="Utilisateur non trouvé")
         except Exception as e:
             return jsonify({"error": str(e)}), 500
-    return render_template("users/login.html")
+    return render_template("user/login.html")
 
 def logout():
     session.pop("user_id", None)
