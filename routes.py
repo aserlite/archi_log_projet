@@ -1,6 +1,7 @@
 from app_instance import app
 from controllers.drink import *
 from controllers.user import *
+from controllers.party import *
 
 
 @app.route("/")
@@ -28,6 +29,7 @@ def add_drink():
 def single_drink_route(drink_id):
     return single_drink(drink_id)
 
+
 # Routes pour les utilisateurs
 @app.route("/register", methods=["GET", "POST"])
 def register_route():
@@ -53,8 +55,35 @@ def login_route():
 def logout_route():
     return logout()
 
+
 @app.route("/profile")
 def profile_route():
     if "user_id" not in session:
         return redirect("/login")
     return profile()
+
+
+# Routes pour les soirées
+@app.route("/create_party", methods=["GET", "POST"])
+def create_party_route():
+    if "user_id" not in session:
+        return redirect("/login")
+    else:
+        return create_party()
+
+
+@app.route("/party/<int:party_id>")
+def view_party_route(party_id):
+    if "user_id" not in session:
+        return redirect("/login")
+    return view_party(party_id)
+
+@app.route("/current_party")
+def current_party_route():
+    if "user_id" not in session:
+        return redirect("/login")
+    return get_current_party()
+
+@app.route('/close_party/<int:party_id>', methods=['POST'])
+def close_party_route(party_id):
+    return close_party(party_id)
