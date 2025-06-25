@@ -23,6 +23,8 @@ def create_drink_route():
 
 @app.route("/drinks/create", methods=["GET"])
 def add_drink():
+    if "user_id" not in session:
+        return redirect("/login")
     return render_template("drinks/add.html");
 
 

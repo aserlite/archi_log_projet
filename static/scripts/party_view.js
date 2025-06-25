@@ -60,4 +60,4 @@ function updatePartyStats() {
         });
 }
 updatePartyStats();
-setInterval(updatePartyStats, 20000);
+setInterval(updatePartyStats, 5000);
