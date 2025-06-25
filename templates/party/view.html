@@ -19,7 +19,7 @@
         {% if party.id_organisateur == session['user_id'] %}
         <form action="{{ url_for('close_party_route', party_id=party.id_soiree) }}" method="post">
             <button type="submit" class="btn btn-danger"
-                onclick="return confirm('Êtes-vous sûr de vouloir fermer la fête ?')">
+                    onclick="return confirm('Êtes-vous sûr de vouloir fermer la fête ?')">
                 Fermer la fête
             </button>
         </form>
@@ -32,7 +32,7 @@
             <input type="hidden" name="party_id" value="{{ party.id_soiree }}">
             <div class="mb-3">
                 <input type="text" id="drink-search" class="form-control" autocomplete="off"
-                    placeholder="Rechercher une boisson...">
+                       placeholder="Rechercher une boisson...">
                 <div id="drink-suggestions" class="list-group"></div>
             </div>
             <input type="hidden" name="drink_id" id="selected-drink-id">
@@ -60,20 +60,41 @@
 
     <div id="cell-historique" class="cell">
         <h2>Historique</h2>
-    </div>
-
-    <div id="cell-participants" class="cell">
-        <h2>Participants</h2>
         <div class="table-container">
             <table class="table table-striped">
                 <thead>
+                <tr>
+                    <th>Pseudo</th>
+                    <th>Boisson</th>
+                    <th>Heure</th>
+                    <th>Commentaire</th>
+                </tr>
+                </thead>
+                <tbody id="history-table-body">
+                {% for conso in party.conso %}
+                <tr>
+                    <td>{{ conso[0] }}</td>
+                    <td>{{ conso[1] }}</td>
+                    <td>{{ conso[2] }}</td>
+                    <td>{{ conso[3] }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div id="cell-participants" class="cell">
+            <h2>Participants</h2>
+            <div class="table-container">
+                <table class="table table-striped">
+                    <thead>
                     <tr>
                         <th>Nom</th>
                         <th>Verres</th>
                         <th>Taux d'alcool (%)</th>
                     </tr>
-                </thead>
-                <tbody>
+                    </thead>
+                    <tbody>
                     <tr>
                         <td>Toi</td>
                         <td>{{ user_drink_count }}</td>
@@ -145,20 +166,20 @@
                         <td>0.6</td>
                     </tr>
 
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
         </div>
+
+
     </div>
 
+    {% else %}
+    <h2>{{ party.nom }} - terminée</h2>
+    <p>Date : {{ party.date }}</p>
+    <p>La fête est terminée.</p>
+    {% endif %}
 
-</div>
+    <script src="../static/scripts/party_view.js" defer></script>
 
-{% else %}
-<h2>{{ party.nom }} - terminée</h2>
-<p>Date : {{ party.date }}</p>
-<p>La fête est terminée.</p>
-{% endif %}
-
-<script src="../static/scripts/party_view.js" defer></script>
-
-{% endblock %}
+    {% endblock %}

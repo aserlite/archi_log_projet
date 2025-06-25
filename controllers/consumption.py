@@ -82,3 +82,15 @@ def is_user_in_party():
             return Party.get_id_for_user(cur, user_id)
     except Exception:
         return None
+
+
+def get_consumption_by_party(party_id):
+    if not is_authenticated():
+        return jsonify({"success": False, "error": "Non authentifié"}), 401
+    try:
+        with mysql.connection.cursor() as cur:
+            consumption = Consumption.get_consumption_by_party(cur, party_id)
+
+            return jsonify({"success": True, "consumption": consumption})
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500

@@ -28,9 +28,15 @@ class Consumption:
 
     @staticmethod
     def get_consumption_by_party(cursor, id_soiree):
-        cursor.execute("SELECT * FROM consommation WHERE id_soiree = %s", (id_soiree,))
-        rows = cursor.fetchall()
-        return [Consumption(*row) for row in rows]
+        cursor.execute("""
+                       SELECT u.pseudo, b.nom, c.timestamp, c.commentaire
+                       FROM consommation c
+                                JOIN utilisateur u ON c.id_user = u.id_user
+                                JOIN boisson b ON c.id_boisson = b.id_boisson
+                       WHERE c.id_soiree = %s
+                       ORDER BY c.timestamp DESC
+                       """, (id_soiree,))
+        return cursor.fetchall()
 
     @staticmethod
     def get_consumption_by_user(cursor, id_user):

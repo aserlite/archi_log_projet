@@ -122,3 +122,7 @@ def stats_route():
     if "user_id" not in session:
         return redirect("/login")
     return stats()
+
+@app.route('/party/<int:party_id>/history')
+def party_history_route(party_id):
+    return get_consumption_by_party(party_id)

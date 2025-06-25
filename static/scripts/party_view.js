@@ -16,6 +16,7 @@ document.getElementById('add-conso-form').addEventListener('submit', function (e
                 document.getElementById('quantity').value = 1;
                 document.getElementById('comment').value = '';
                 document.getElementById('drink-count').textContent = result.new_count;
+                updateHistoryTable();
             }
         })
 });
@@ -50,6 +51,26 @@ document.getElementById('drink-suggestions').addEventListener('click', function 
     }
 });
 
+function updateHistoryTable() {
+    const partyId = document.querySelector('input[name="party_id"]').value;
+    fetch(`/party/${partyId}/history`)
+        .then(response => response.json())
+        .then(data => {
+            const tbody = document.getElementById('history-table-body');
+            if (tbody && data.success) {
+                tbody.innerHTML = data.consumption.map(
+                    c => `<tr>
+                        <td>${c[0]}</td>
+                        <td>${c[1]}</td>
+                        <td>${formatHour(c[2])}</td>
+                        <td>${c[3]}</td>
+                    </tr>`
+                ).join('');
+            }
+        });
+}
+
+
 function updatePartyStats() {
     const partyId = document.querySelector('input[name="party_id"]').value;
     fetch(`/party/${partyId}/stats`)
@@ -65,4 +86,11 @@ function updatePartyStats() {
 }
 
 updatePartyStats();
+updateHistoryTable();
 setInterval(updatePartyStats, 5000);
+setInterval(updateHistoryTable, 5000);
+
+function formatHour(dateString) {
+    const date = new Date(dateString);
+    return date.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+}
