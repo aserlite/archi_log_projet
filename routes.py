@@ -113,6 +113,15 @@ def add_conso_route():
     else:
         return add_conso()
 
+@app.route('/party/write_taux', methods=['GET'])
+def write_taux_route():
+    if "user_id" not in session:
+        return jsonify({"taux": 0})
+
+    taux = calculer_taux_alcoolemie(session["user_id"])
+    return jsonify({"taux": taux})
+
+
 @app.route('/party/<int:party_id>/stats', methods=['GET'])
 def party_stats_route(party_id):
     return party_stats(party_id)
@@ -122,3 +131,7 @@ def stats_route():
     if "user_id" not in session:
         return redirect("/login")
     return stats()
+
+@app.route('/api/participants/<int:party_id>')
+def get_participants(party_id):
+    return get_participants_for_party(party_id)

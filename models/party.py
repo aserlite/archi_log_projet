@@ -89,13 +89,25 @@ class Party:
     @staticmethod
     def count_user_drinks(cursor, party_id, user_id):
         cursor.execute("""
-                       SELECT COUNT(*)
+                       SELECT SUM(quantité) AS total_consommations
                        FROM consommation
                        WHERE id_soiree = %s
-                         AND id_user = %s
+                       AND id_user = %s;
                        """, (party_id, user_id))
         result = cursor.fetchone()
         return result[0] if result else 0
+
+    @staticmethod
+    def get_participants_in_party(cur, party_id):
+        cur.execute("""
+            SELECT utilisateur.id_user, utilisateur.pseudo
+            FROM invitation
+            JOIN utilisateur ON invitation.id_user = utilisateur.id_user
+            WHERE invitation.id_soiree = %s
+        """, (party_id,))
+    
+        results = cur.fetchall()
+        return [{"id": row[0], "pseudo": row[1]} for row in results]
 
     @staticmethod
     def get_party_stats(cursor, party_id):

@@ -123,3 +123,15 @@ def party_stats(party_id):
             return jsonify({"stats": stats})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+    
+def get_participants_for_party(party_id):
+    if not is_authenticated():
+        return jsonify({"error": "Non authentifié"}), 401
+    try:
+        with mysql.connection.cursor() as cur:
+            party = Party.get_participants_in_party(cur, party_id)
+            if not party:
+                return jsonify({"error": "Fête introuvable"}), 404
+            return jsonify({"participants": party})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500

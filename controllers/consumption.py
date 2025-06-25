@@ -24,9 +24,10 @@ def add_conso():
         with mysql.connection.cursor() as cur:
             Consumption.create(cur, user_id, party_id, drink_id, quantity, comment)
             mysql.connection.commit()
+            pseudo = User.get_pseudo_by_id(cur, user_id)
             new_count = Party.count_user_drinks(cur, party_id, user_id)
         if request.headers.get("X-Requested-With") == "XMLHttpRequest":
-            return jsonify({"success": True, "new_count": new_count})
+            return jsonify({"success": True, "id":user_id, "new_count": new_count, "pseudo": pseudo}), 200
         return redirect(url_for("view_party_route", party_id=party_id))
     except Exception as e:
         if request.headers.get("X-Requested-With") == "XMLHttpRequest":

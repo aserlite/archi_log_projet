@@ -29,6 +29,12 @@ class User:
         )
 
     @staticmethod
+    def get_pseudo_by_id(cur, user_id):
+        cur.execute("SELECT pseudo FROM utilisateur WHERE id_user = %s", (user_id,))
+        result = cur.fetchone()
+        return result[0] if result else None
+    
+    @staticmethod
     def get_id_by_email(cursor, email):
         cursor.execute("SELECT id_user FROM utilisateur WHERE email = %s", (email,))
         row = cursor.fetchone()

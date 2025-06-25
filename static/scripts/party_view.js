@@ -1,3 +1,41 @@
+function ajouterLigneParticipant(id, pseudo) {
+    const tbody = document.getElementById("participants-list");
+    const ligne = document.createElement("tr");
+    ligne.id = id;
+    ligne.innerHTML = `
+        <td>${pseudo}</td>
+        <td>0</td>
+        <td>0.00 ‰</td>
+    `;
+    tbody.appendChild(ligne);
+}
+
+function verifierNouveauxParticipants(partyId) {
+    fetch(`/api/participants/${partyId}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.participants && Array.isArray(data.participants)) {
+                data.participants.forEach(p => {
+                    if (!document.getElementById(p.id)) {
+                        ajouterLigneParticipant(p.id, p.pseudo);
+                    }
+                });
+            } else {
+                console.error("Format inattendu :", data);
+            }
+        })
+        .catch(err => console.error("Erreur récupération des participants :", err));
+}
+
+const partyId = Number(document.querySelector("input[name='party_id']").value);
+verifierNouveauxParticipants(partyId); // Au chargement
+setInterval(() => {
+    verifierNouveauxParticipants(partyId);
+}, 30000);
+
+
+
+
 // Ajout d'une consommation
 document.getElementById('add-conso-form').addEventListener('submit', function (e) {
     e.preventDefault();
@@ -13,12 +51,65 @@ document.getElementById('add-conso-form').addEventListener('submit', function (e
         .then(response => response.json())
         .then(result => {
             if (result.success) {
-                document.getElementById('quantity').value = 1;
-                document.getElementById('comment').value = '';
-                document.getElementById('drink-count').textContent = result.new_count;
+                console.log(result)
+                const tableau_participants = document.getElementById('participants-list')
+                let existingRow = document.getElementById(result.id); 
+
+                if (existingRow) {
+                    existingRow.cells[1].textContent = result.new_count;
+                } else {
+                    const newRow = document.createElement('tr');
+                    newRow.id = result.id;
+
+                    const nameCell = document.createElement('td');
+                    nameCell.textContent = result.pseudo;
+
+                    const countCell = document.createElement('td');
+                    countCell.textContent = result.new_count;
+
+                    newRow.appendChild(nameCell);
+                    newRow.appendChild(countCell);
+
+                    tableau_participants.appendChild(newRow);
+                }
             }
         })
 });
+
+
+// function mettreAJourMonTaux(userId) {
+//     fetch('/party/write_taux')
+//         .then(response => response.json())
+//         .then(data => {
+//             if (typeof data.taux !== "number") {
+//                 console.warn("Taux non valide :", data);
+//                 return;
+//             }
+
+//             const ligne = document.getElementById(String(userId));
+//             if (ligne && ligne.cells.length >= 3) {
+//                 ligne.cells[2].textContent = data.taux.toFixed(2) + " ‰";
+//             } else {
+//                 console.warn("Ligne introuvable pour userId :", userId);
+//             }
+//         })
+//         .catch(error => console.error('Erreur lors de la mise à jour du taux perso :', error));
+// }
+
+// const userIdInput = document.querySelector("input[name='user_id']");
+// const userId = userIdInput ? Number(userIdInput.value) : null;
+
+// if (userId) {
+//     mettreAJourMonTaux(userId);
+//     setInterval(() => {
+//         mettreAJourMonTaux(userId);
+//     }, 30000);
+// } else {
+//     console.error("Champ caché user_id non trouvé ou invalide.");
+// }
+
+
+
 
 // Ajax pour chercher une boisson
 document.getElementById('drink-search').addEventListener('input', function () {
