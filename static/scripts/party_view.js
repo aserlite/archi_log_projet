@@ -94,7 +94,7 @@ function updatePartyStats() {
                     stat => `<tr${stat.user_id == currentUserId ? ' class="current-user-row"' : ''}>
                         <td>${stat.user}</td>
                         <td>${stat.count}</td>
-                        <td>${stat.alcoolemie ?? '-'}</td>
+                        <td>${stat.alcoolemie.taux ?? '-'}</td>
                     </tr>`
                 ).join('');
             }
