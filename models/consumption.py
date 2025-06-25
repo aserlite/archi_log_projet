@@ -24,3 +24,22 @@ class Consumption:
             "INSERT INTO consommation (id_user, id_soiree, id_boisson, quantité, commentaire) VALUES (%s, %s, %s, %s, %s)",
             (id_user, id_soiree, id_boisson, quantité, commentaire)
         )
+        return cursor.lastrowid
+
+    @staticmethod
+    def get_consumption_by_party(cursor, id_soiree):
+        cursor.execute("SELECT * FROM consommation WHERE id_soiree = %s", (id_soiree,))
+        rows = cursor.fetchall()
+        return [Consumption(*row) for row in rows]
+
+    @staticmethod
+    def get_consumption_by_user(cursor, id_user):
+        cursor.execute("SELECT * FROM consommation WHERE id_user = %s", (id_user,))
+        rows = cursor.fetchall()
+        return [Consumption(*row) for row in rows]
+
+    @staticmethod
+    def get_consumption_by_user_by_party(cursor, id_user, id_soiree):
+        cursor.execute("SELECT * FROM consommation WHERE id_user = %s AND id_soiree = %s", (id_user, id_soiree))
+        rows = cursor.fetchall()
+        return [Consumption(*row) for row in rows]

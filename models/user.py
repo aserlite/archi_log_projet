@@ -66,3 +66,12 @@ class User:
             "UPDATE utilisateur SET pseudo=%s, email=%s, âge=%s, poids=%s, genre=%s, password=%s WHERE id_user=%s",
             (pseudo, email, âge, poids, genre, password, id_user)
         )
+
+    @staticmethod
+    def get_secured_user(cursor, id_user, token):
+        cursor.execute(
+            "SELECT id_user, pseudo, email, password, âge, poids, genre, create_dt, session_token FROM utilisateur WHERE id_user = %s AND session_token = %s",
+            (id_user, token)
+        )
+        row = cursor.fetchone()
+        return User(*row) if row else None

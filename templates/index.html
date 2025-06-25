@@ -12,7 +12,7 @@
     <a class="cell" href="{{ url_for('create_party_route') }}" id="cell-soiree">
         <h3>Soirée en cours</h3>
         <p>Nombre de verres : {{ current_party.user_drink_count }}</p>
-        <p>Taux d'alcool : 0.0 g/L</p>
+        <p>Taux d'alcool : {{ current_party.alcoolemie }} g/L</p>
     </a>
     {% else %}
     <a class="cell" href="{{ url_for('create_party_route') }}" id="cell-soiree">

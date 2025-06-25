@@ -7,6 +7,7 @@ from flask import render_template, session, jsonify
 from controllers.user import is_authenticated
 from db import mysql
 from models.party import Party
+from controllers.consumption import calculer_taux_alcoolemie
 
 def generate_qr_code(data):
     qr = qrcode.QRCode(box_size=6, border=2)
@@ -31,9 +32,11 @@ def index_t():
         if party_id:
             cur = mysql.connection.cursor()
             user_drink_count = Party.count_user_drinks(cur, party_id, user_id)
+            alcoolemie = calculer_taux_alcoolemie()
             current_party = {
                 'party_id': party_id,
-                'user_drink_count': user_drink_count
+                'user_drink_count': user_drink_count,
+                'alcoolemie': alcoolemie
             }
             cur.close()
     return render_template('index.html', citation_img=citation_img, current_party=current_party)

@@ -4,6 +4,7 @@ from controllers.user import *
 from controllers.party import *
 from controllers.consumption import *
 from controllers.utils import index_t
+
 @app.route('/')
 def index():
     return index_t()
