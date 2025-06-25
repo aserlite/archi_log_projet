@@ -37,13 +37,24 @@ document.getElementById('drink-search').addEventListener('input', function () {
         });
 });
 
-document.getElementById('drink-suggestions').addEventListener('click', function (e) {
-    if (e.target && e.target.matches('a[data-id]')) {
-        e.preventDefault();
-        document.getElementById('drink-search').value = e.target.textContent;
-        document.getElementById('selected-drink-id').value = e.target.getAttribute('data-id');
-        this.innerHTML = '';
+document.getElementById('drink-search').addEventListener('input', function () {
+    const query = this.value;
+    const suggestionsDiv = document.getElementById('drink-suggestions');
+    if (query.length < 1) {
+        suggestionsDiv.innerHTML = '';
+        return;
     }
+    fetch('/drinks/search?q=' + encodeURIComponent(query))
+        .then(response => response.json())
+        .then(data => {
+            let suggestions = data.drinks.map(drink =>
+                `<a href="#" class="list-group-item list-group-item-action drink-suggestion" data-id="${drink.id}">${drink.nom}</a>`
+            ).join('');
+            if (data.drinks.length === 0) {
+                suggestions += `<a href="/drinks/create" class="list-group-item list-group-item-action text-success">Ajouter "${query}"</a>`;
+            }
+            suggestionsDiv.innerHTML = suggestions;
+        });
 });
 
 function updatePartyStats() {
