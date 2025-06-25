@@ -2,6 +2,18 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'hammersmith One', sans-serif;
+}
+
+html, body {
+    height: 100%;
+    scroll-behavior: smooth;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 header {
@@ -17,6 +29,9 @@ nav {
     justify-content: space-between;
 }
 
+main{
+    padding: 1rem;
+}
 
 nav h1 a {
     font-family: 'Lilita One';
@@ -62,11 +77,28 @@ footer p {
 }
 
 
-
-
 @media (max-width: 768px) {
 
     #user p {
         display: none;
     }
+}
+
+.btn {
+    background: #222222;
+    color: #fff;
+    padding: 0.5em 1.2em;
+    border-radius: 0.7em;
+    text-decoration: none;
+    display: inline-block;
+    margin:.5rem;
+    transition: background 0.2s;
+}
+.btn:hover {
+    background: #444;
+    color: #fff;
+}
+
+table .btn{
+    margin: 0;
 }

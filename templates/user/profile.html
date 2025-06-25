@@ -3,8 +3,8 @@
 {% block title %}Fésoif - Profil{% endblock %}
 
 {% block content %}
-<a href="{{ url_for('index') }}">Retour à l'accueil</a>
-<a href="{{ url_for('logout_route') }}">Se déconnecter</a>
+<a href="{{ url_for('index') }}" class="btn">Retour à l'accueil</a>
+<a href="{{ url_for('logout_route') }}" class="btn">Se déconnecter</a>
 
 {% if error %}
 <div class="error">{{ error }}</div>
@@ -13,29 +13,29 @@
 <div class="success">{{ success }}</div>
 {% endif %}
 
-<h2>Profil utilisateur</h2>
+<link rel="stylesheet" href="../static/styles/style_login.css">
+
 <form method="post" action="{{ url_for('edit_profile_route') }}">
-    <label>Pseudo: <input type="text" name="pseudo" value="{{ user.pseudo }}" required></label><br>
-    <label>Email : <input type="email" name="email" value="{{ user.email }}" required></label><br>
-    <label>Âge : <input type="number" name="âge" value="{{ user.âge }}" required></label><br>
-    <label>Poids : <input type="number" name="poids" value="{{ user.poids }}" required></label><br>
+    <h2>Profil utilisateur</h2>
+    <label>Pseudo: </label><input type="text" name="pseudo" value="{{ user.pseudo }}" required>
+    <label>Email : </label><input type="email" name="email" value="{{ user.email }}" required>
+    <label>Âge : </label><input type="number" name="âge" value="{{ user.âge }}" required>
+    <label>Poids : </label><input type="number" name="poids" value="{{ user.poids }}" required>
     <label for="genre">Genre :</label>
     <label class="radio">
-      <input name="genre" type="radio" value="Homme" required>
-      <span>Homme</span>
+        <input name="genre" type="radio" value="Homme" required>
+        <span>Homme</span>
     </label>
     <label class="radio">
-      <input name="genre" type="radio" value="Femme" required>
-      <span>Femme</span>
+        <input name="genre" type="radio" value="Femme" required>
+        <span>Femme</span>
     </label>
     <label class="radio">
-      <input name="genre" type="radio" value="Non_spec" required>
-      <span>Non spécifié</span>
+        <input name="genre" type="radio" value="Non_spec" required>
+        <span>Non spécifié</span>
     </label>
-    <label>Mot de passe actuel : <input type="password" name="current_password" required></label><br>
-    <label>Nouveau mot de passe : <input type="password" name="new_password"></label><br>
+    <label>Mot de passe actuel : <input type="password" name="current_password" required></label>
+    <label>Nouveau mot de passe : <input type="password" name="new_password"></label>
     <button type="submit">Enregistrer les modifications</button>
 </form>
 {% endblock %}
-
-

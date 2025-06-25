@@ -19,7 +19,7 @@ def create_drink():
         with mysql.connection.cursor() as cur:
             nom = request.form.get("nom")
             ingredients = request.form.get("ingredients")
-            alcool = request.form.get("alcool", "on") == "on"
+            alcool = request.form.get("alcool", "off") == "on"
             degre = request.form.get("degre")
             description = request.form.get("description")
             drink_id = Drink.create(cur, nom, ingredients, alcool, degre, description)

@@ -79,19 +79,22 @@ table {
 }
 
 thead {
-    background-color: #3498db;
-    color: white;
+    background-color: #222222;
+    color: white ;
 }
 
 th, td {
-    color: #000;
     padding: 12px 15px;
     text-align: left;
     border-bottom: 1px solid #eee;
 }
 
-tr:hover {
-    background-color: #f1f1f1;
+tbody th, tbody td {
+    color: #222222;
+}
+
+tbody tr:hover {
+    background-color: #d9d9d9 !important;
 }
 
 .table-striped tbody tr:nth-child(odd) {
@@ -220,4 +223,8 @@ p {
     }
 
 
+}
+
+#drinks-table, #stats-table{
+    max-height: max-content;
 }
