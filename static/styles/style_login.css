@@ -9,7 +9,7 @@ form {
 }
 
 form h1 {
-    font-family: 'Lilita One';
+    font-family: 'hammersmith One', sans-serif;
 
     margin-bottom: 1.5rem;
     font-size: 1.5rem;
@@ -18,7 +18,7 @@ form h1 {
 }
 
 label {
-    font-family: 'hammersmith One';
+    font-family: 'Inter';
 
     display: block;
     margin-bottom: 0.5rem;
@@ -42,7 +42,7 @@ input:focus {
 }
 
 button[type="submit"] {
-    font-family: 'hammersmith One';
+    font-family: 'Inter';
     width: 100%;
     padding: 0.75rem;
     background-color: #68d391;
@@ -59,7 +59,7 @@ button:hover {
 }
 
 .alert.alert-danger {
-    font-family: 'hammersmith One';
+    font-family: 'Inter';
     max-width: 400px;
     margin: 1rem auto;
     padding: 1rem;
@@ -73,7 +73,7 @@ p {
     text-align: center;
     margin-top: 1rem;
     color: #bbb;
-    font-family: 'hammersmith One';
+    font-family: 'Inter';
     margin-bottom: 2em;
 }
 
