@@ -8,10 +8,18 @@
 
 <div id="cell-container">
     {% if session.user_id %}
+    {% if current_party %}
+    <a class="cell" href="{{ url_for('create_party_route') }}" id="cell-soiree">
+        <h3>Soirée en cours</h3>
+        <p>Nombre de verres : {{ current_party.user_drink_count }}</p>
+        <p>Taux d'alcool : 0.0 g/L</p>
+    </a>
+    {% else %}
     <a class="cell" href="{{ url_for('create_party_route') }}" id="cell-soiree">
         <h3>Nouvelle soirée</h3>
         <p>Elle n'attend que toi</p>
     </a>
+    {% endif %}
 
     <a class="cell" href="{{ url_for('create_party_route') }}" id="cell-historique">
         <h3>Tes stats et anciennes soirées</h3>
@@ -20,7 +28,7 @@
 
     <div class="cell" id="cell-citation">
         {% if citation_img %}
-            <img src="{{ url_for('static', filename=citation_img) }}" alt="Citation">
+        <img src="{{ url_for('static', filename=citation_img) }}" alt="Citation">
         {% endif %}
     </div>
 
@@ -30,17 +38,17 @@
     </a>
     {% else %}
     <a href="{{ url_for('login_route') }}" class="cell" id="cell-soiree">
-            <h3>Connecte-toi pour créer une soirée</h3>
-            <p>Elle n'attend que toi</p>
+        <h3>Connecte-toi pour créer une soirée</h3>
+        <p>Elle n'attend que toi</p>
     </a>
-    <a href="{{ url_for('register_route') }}"  class="cell" id="cell-historique">
-            <h3>Pas encore inscrit ?</h3>
-            <p>Rejoins-nous !</p>
+    <a href="{{ url_for('register_route') }}" class="cell" id="cell-historique">
+        <h3>Pas encore inscrit ?</h3>
+        <p>Rejoins-nous !</p>
     </a>
 
     <div class="cell" id="cell-citation">
         {% if citation_img %}
-            <img src="{{ url_for('static', filename=citation_img) }}" alt="Citation">
+        <img src="{{ url_for('static', filename=citation_img) }}" alt="Citation">
         {% endif %}
     </div>
 
