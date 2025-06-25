@@ -2,6 +2,7 @@ from flask import request, jsonify, session, redirect, url_for
 from db import mysql
 from controllers.user import is_authenticated
 from models.consumption import Consumption
+from models.party import Party
 
 def add_conso():
     if not is_authenticated():
@@ -20,8 +21,9 @@ def add_conso():
         with mysql.connection.cursor() as cur:
             Consumption.create(cur, user_id, party_id, drink_id, quantity, comment)
             mysql.connection.commit()
+            new_count = Party.count_user_drinks(cur, party_id, user_id)
         if request.headers.get("X-Requested-With") == "XMLHttpRequest":
-            return jsonify({"success": True})
+            return jsonify({"success": True, "new_count": new_count})
         return redirect(url_for("view_party_route", party_id=party_id))
     except Exception as e:
         if request.headers.get("X-Requested-With") == "XMLHttpRequest":

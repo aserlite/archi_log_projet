@@ -111,3 +111,7 @@ def add_conso_route():
         return redirect("/login")
     else:
         return add_conso()
+
+@app.route('/party/<int:party_id>/stats', methods=['GET'])
+def party_stats_route(party_id):
+    return party_stats(party_id)

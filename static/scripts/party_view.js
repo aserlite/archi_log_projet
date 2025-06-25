@@ -15,6 +15,7 @@ document.getElementById('add-conso-form').addEventListener('submit', function (e
             if (result.success) {
                 document.getElementById('quantity').value = 1;
                 document.getElementById('comment').value = '';
+                document.getElementById('drink-count').textContent = result.new_count;
             }
         })
 });
@@ -44,3 +45,19 @@ document.getElementById('drink-suggestions').addEventListener('click', function 
         this.innerHTML = '';
     }
 });
+
+function updatePartyStats() {
+    const partyId = document.querySelector('input[name="party_id"]').value;
+    fetch(`/party/${partyId}/stats`)
+        .then(response => response.json())
+        .then(data => {
+            const statsList = document.getElementById('party-stats');
+            if (statsList) {
+                statsList.innerHTML = data.stats.map(
+                    stat => `<li>${stat.user} : ${stat.count} verres</li>`
+                ).join('');
+            }
+        });
+}
+updatePartyStats();
+setInterval(updatePartyStats, 20000);

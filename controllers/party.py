@@ -37,7 +37,14 @@ def view_party(party_id):
                 return jsonify({"error": "Unauthorized access"}), 403
             join_url = url_for('join_party_route', _external=True) + f"?code={party.code}"
             qr_code = generate_qr_code(join_url)
-            return render_template("party/view.html", party=party, qr_code=qr_code, join_url=join_url)
+            user_drink_count = Party.count_user_drinks(cur, party_id, user_id)
+            return render_template(
+                "party/view.html",
+                party=party,
+                qr_code=qr_code,
+                join_url=join_url,
+                user_drink_count=user_drink_count
+            )
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
@@ -100,3 +107,19 @@ def join_party():
             return render_template("party/join.html", error=str(e))
     else:
         return render_template("party/join.html")
+
+def party_stats(party_id):
+    if not is_authenticated():
+        return jsonify({"error": "Non authentifié"}), 401
+    try:
+        with mysql.connection.cursor() as cur:
+            party = Party.get_by_id(cur, party_id)
+            if not party:
+                return jsonify({"error": "Fête introuvable"}), 404
+            user_id = session.get("user_id")
+            if party.id_organisateur != user_id and not Party.is_user_invited(cur, party_id, user_id):
+                return jsonify({"error": "Accès non autorisé"}), 403
+            stats = Party.get_party_stats(cur, party_id)
+            return jsonify({"stats": stats})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
