@@ -118,3 +118,21 @@ function formatHour(dateString) {
     const minutes = String(date.getUTCMinutes()).padStart(2, '0');
     return `${hours}:${minutes}`;
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+    const randomBtn = document.getElementById('random-drink-btn');
+    if (randomBtn) {
+        randomBtn.addEventListener('click', function () {
+            fetch('/drinks/search?q=')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.drinks && data.drinks.length > 0) {
+                        const random = data.drinks[Math.floor(Math.random() * data.drinks.length)];
+                        document.getElementById('drink-search').value = random.nom;
+                        document.getElementById('selected-drink-id').value = random.id;
+                        document.getElementById('drink-suggestions').innerHTML = '';
+                    }
+                });
+        });
+    }
+});
