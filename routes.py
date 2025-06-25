@@ -135,3 +135,8 @@ def stats_route():
 @app.route('/api/participants/<int:party_id>')
 def get_participants(party_id):
     return get_participants_for_party(party_id)
+
+
+@app.route('/party/<int:party_id>/history')
+def party_history_route(party_id):
+    return get_consumption_by_party(party_id)

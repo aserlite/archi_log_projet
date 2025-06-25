@@ -3,12 +3,14 @@
 {% block title %}Fésoif - ajout boisson{% endblock %}
 
 {% block content %}
-<a href="{{ url_for('drinks') }}">Retour à la liste des boissons</a>
+<a href="{{ url_for('drinks') }}" class="btn">Retour à la liste des boissons</a>
+
+<link rel="stylesheet" href="../static/styles/style_login.css">
 
 <form action="/drinks/create" method="post">
     <h1>Ajouter une boisson</h1>
     <label for="alcool">Alcool:</label>
-    <input type="checkbox" id="alcool" name="alcool" checked required><br><br>
+    <input type="checkbox" id="alcool" name="alcool" checked><br><br>
 
     <label for="nom">Nom:</label>
     <input type="text" id="nom" name="nom" required><br><br>
@@ -24,5 +26,4 @@
 
     <button type="submit">Ajouter</button>
 </form>
-
 {% endblock %}

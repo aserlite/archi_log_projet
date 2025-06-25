@@ -2,14 +2,19 @@
 
 {% block title %}Fésoif - Boissons{% endblock %}
 
+{% block stylesheets %}
+<link rel="stylesheet" href="../static/styles/style_drink_single.css">
+{% endblock %}
+
 {% block content %}
 
-<h1>{{ drink.nom }}</h1>
-<p><strong>Alcool:</strong> {{ drink.alcool }}</p>
-<p><strong>% Alcool:</strong> {{ drink.degre }}</p>
-<p><strong>Ingrédients:</strong> {{ drink.ingredients }}</p>
-<p><strong>Description:</strong> {{ drink.description }}</p>
-
-<a href="/drinks">Retour à la liste des boissons</a>
+<div class="single-drink-container">
+    <h1>{{ drink.nom }}</h1>
+    <p><strong>Alcool:</strong> {{ drink.alcool }}</p>
+    <p><strong>% Alcool:</strong> {{ drink.degre }}</p>
+    <p><strong>Ingrédients:</strong> {{ drink.ingredients }}</p>
+    <p><strong>Description:</strong> {{ drink.description }}</p>
+    <a href="/drinks">Retour à la liste des boissons</a>
+</div>
 
 {% endblock %}
