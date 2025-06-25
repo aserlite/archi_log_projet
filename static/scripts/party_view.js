@@ -23,17 +23,21 @@ document.getElementById('add-conso-form').addEventListener('submit', function (e
 // Ajax pour chercher une boisson
 document.getElementById('drink-search').addEventListener('input', function () {
     const query = this.value;
+    const suggestionsDiv = document.getElementById('drink-suggestions');
     if (query.length < 1) {
-        document.getElementById('drink-suggestions').innerHTML = '';
+        suggestionsDiv.innerHTML = '';
         return;
     }
     fetch('/drinks/search?q=' + encodeURIComponent(query))
         .then(response => response.json())
         .then(data => {
-            const suggestions = data.drinks.map(drink =>
+            let suggestions = data.drinks.map(drink =>
                 `<a href="#" class="list-group-item list-group-item-action drink-suggestion" data-id="${drink.id}">${drink.nom}</a>`
             ).join('');
-            document.getElementById('drink-suggestions').innerHTML = suggestions;
+            if (data.drinks.length === 0) {
+                suggestions += `<a href="/drinks/create" class="list-group-item list-group-item-action text-success">Ajouter "${query}"</a>`;
+            }
+            suggestionsDiv.innerHTML = suggestions;
         });
 });
 
@@ -59,5 +63,6 @@ function updatePartyStats() {
             }
         });
 }
+
 updatePartyStats();
-setInterval(updatePartyStats, 20000);
+setInterval(updatePartyStats, 5000);
