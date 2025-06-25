@@ -75,17 +75,11 @@
                         <th>Boisson</th>
                         <th>Heure</th>
                         <th>Commentaire</th>
+                        <th>Qte</th>
                     </tr>
                 </thead>
                 <tbody id="history-table-body">
-                    {% for conso in party.conso %}
-                    <tr>
-                        <td>{{ conso[0] }}</td>
-                        <td>{{ conso[1] }}</td>
-                        <td>{{ conso[2] }}</td>
-                        <td>{{ conso[3] }}</td>
-                    </tr>
-                    {% endfor %}
+
                 </tbody>
             </table>
         </div>
@@ -98,7 +92,7 @@
                     <tr>
                         <th>Nom</th>
                         <th>Verres</th>
-                        <th>Taux d'alcool (%)</th>
+                        <th>Taux d'alcool (g/L)</th>
                     </tr>
                 </thead>
                 <tbody id='participants-list'>
@@ -107,14 +101,32 @@
             </table>
         </div>
     </div>
-
-
 </div>
 
 {% else %}
 <h2>{{ party.nom }} - terminée</h2>
 <p>Date : {{ party.date }}</p>
 <p>La fête est terminée.</p>
+
+    <div id="cell-historique" class="cell">
+        <h2>Historique</h2>
+        <div class="table-container">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Pseudo</th>
+                        <th>Boisson</th>
+                        <th>Heure</th>
+                        <th>Commentaire</th>
+                        <th>Qte</th>
+                    </tr>
+                </thead>
+                <tbody id="history-table-body">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endif %}
 
 <script src="../static/scripts/party_view.js" defer></script>

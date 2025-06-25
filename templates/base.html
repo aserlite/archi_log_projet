@@ -26,7 +26,7 @@
     {% block stylesheets %}{% endblock %}
 </head>
 
-<body>
+<body data-user-id="{{ session['user_id'] }}">
 <header>
     <nav>
         <h1><a href="/">drunk.</a></h1>

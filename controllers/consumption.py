@@ -35,26 +35,27 @@ def add_conso():
         return jsonify({"error": str(e)}), 500
 
 
-def calculer_taux_alcoolemie(alcoolique):
+def calculer_taux_alcoolemie(user_id, party_id=None):
+    from datetime import datetime
     instant_T = datetime.now()
     dose_alcool = 10
     elimination = 0.15
 
-    if not session.get("user_id"):
-        return jsonify({"taux": 0})
-    party_id = is_user_in_party();
-    if not party_id:
-        return jsonify({"taux": 0})
     cursor = mysql.connection.cursor()
-    user = User.get_by_id(cursor, alcoolique)
+    user = User.get_by_id(cursor, user_id)
     if not user:
-        return jsonify({"taux": 0})
+        return 0
 
     poids = user.poids
     genre = user.genre
     coef = 0.7 if genre == 'Homme' else 0.6
 
-    consommations = Consumption.get_consumption_by_user_by_party(cursor, session.get("user_id"), party_id)
+    if not party_id:
+        party_id = Party.get_id_for_user(cursor, user_id)
+    if not party_id:
+        return 0
+
+    consommations = Consumption.get_consumption_by_user_by_party(cursor, user_id, party_id)
     alcool_total = 0
     for conso in consommations:
         if isinstance(conso.timestamp, str):
@@ -72,7 +73,6 @@ def calculer_taux_alcoolemie(alcoolique):
     taux = max(taux, 0)
     taux = round(taux, 3)
     return taux
-
 
 def is_user_in_party():
     if not is_authenticated():

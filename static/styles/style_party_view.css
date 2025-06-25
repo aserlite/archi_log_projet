@@ -228,3 +228,7 @@ p {
 #drinks-table, #stats-table{
     max-height: max-content;
 }
+
+.current-user-row {
+    background-color: #ffeeba !important;
+}

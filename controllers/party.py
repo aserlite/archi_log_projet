@@ -3,7 +3,7 @@ from flask import jsonify, request, redirect, url_for, session, render_template
 from db import mysql
 from controllers.user import is_authenticated
 from datetime import datetime
-from controllers.utils import generate_qr_code
+from controllers.utils import generate_qr_code, calculer_taux_alcoolemie
 
 def create_party():
     if not is_authenticated():
@@ -142,6 +142,8 @@ def party_stats(party_id):
             if party.id_organisateur != user_id and not Party.is_user_invited(cur, party_id, user_id):
                 return jsonify({"error": "Accès non autorisé"}), 403
             stats = Party.get_party_stats(cur, party_id)
+            for stat in stats:
+                stat['alcoolemie'] = calculer_taux_alcoolemie(stat['user_id'])
             return jsonify({"stats": stats})
     except Exception as e:
         return jsonify({"error": str(e)}), 500

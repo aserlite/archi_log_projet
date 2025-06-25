@@ -120,20 +120,18 @@ class Party:
     @staticmethod
     def get_party_stats(cursor, party_id):
         cursor.execute("""
-                       SELECT u.pseudo, COUNT(c.id_user) as count
-                       FROM invitation i
-                           JOIN utilisateur u
-                       ON u.id_user = i.id_user
-                           LEFT JOIN consommation c ON c.id_user = u.id_user AND c.id_soiree = %s
-                       WHERE i.id_soiree = %s
-                       GROUP BY u.id_user
-                       UNION
-                       SELECT u.pseudo, COUNT(c.id_user) as count
-                       FROM soiree s
-                           JOIN utilisateur u
-                       ON u.id_user = s.id_organisateur
-                           LEFT JOIN consommation c ON c.id_user = u.id_user AND c.id_soiree = %s
-                       WHERE s.id_soiree = %s
-                       GROUP BY u.id_user
-                       """, (party_id, party_id, party_id, party_id))
-        return [{"user": row[0], "count": row[1]} for row in cursor.fetchall()]
+            SELECT u.pseudo, COALESCE(SUM(c.quantité), 0) as count, u.id_user
+            FROM invitation i
+                JOIN utilisateur u ON u.id_user = i.id_user
+                LEFT JOIN consommation c ON c.id_user = u.id_user AND c.id_soiree = %s
+            WHERE i.id_soiree = %s
+            GROUP BY u.id_user
+            UNION
+            SELECT u.pseudo, COALESCE(SUM(c.quantité), 0) as count, u.id_user
+            FROM soiree s
+                JOIN utilisateur u ON u.id_user = s.id_organisateur
+                LEFT JOIN consommation c ON c.id_user = u.id_user AND c.id_soiree = %s
+            WHERE s.id_soiree = %s
+            GROUP BY u.id_user
+        """, (party_id, party_id, party_id, party_id))
+        return [{"user": row[0], "count": int(row[1]), "user_id": row[2]} for row in cursor.fetchall()]
