@@ -32,7 +32,7 @@ def index_t():
         if party_id:
             cur = mysql.connection.cursor()
             user_drink_count = Party.count_user_drinks(cur, party_id, user_id)
-            alcoolemie = calculer_taux_alcoolemie()
+            alcoolemie = calculer_taux_alcoolemie(session.get("user_id"))
             current_party = {
                 'party_id': party_id,
                 'user_drink_count': user_drink_count,

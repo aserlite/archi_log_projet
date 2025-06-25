@@ -34,7 +34,7 @@ def add_conso():
         return jsonify({"error": str(e)}), 500
 
 
-def calculer_taux_alcoolemie():
+def calculer_taux_alcoolemie(alcoolique):
     instant_T = datetime.now()
     dose_alcool = 10
     elimination = 0.15
@@ -45,7 +45,7 @@ def calculer_taux_alcoolemie():
     if not party_id:
         return jsonify({"taux": 0})
     cursor = mysql.connection.cursor()
-    user = User.get_secured_user(cursor, session.get("user_id"), session.get("session_token"))
+    user = User.get_by_id(cursor, alcoolique)
     if not user:
         return jsonify({"taux": 0})
 
