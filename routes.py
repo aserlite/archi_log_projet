@@ -3,12 +3,10 @@ from controllers.drink import *
 from controllers.user import *
 from controllers.party import *
 from controllers.consumption import *
-
-@app.route("/")
+from controllers.utils import index_t
+@app.route('/')
 def index():
-    user = get_current_user()
-    return render_template("index.html" , user=user)
-
+    return index_t()
 
 @app.route("/drinks")
 def drinks():

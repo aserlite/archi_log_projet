@@ -19,7 +19,9 @@
     </a>
 
     <div class="cell" id="cell-citation">
-        <img src="../static/images/citation.png" alt="Citation">
+        {% if citation_img %}
+            <img src="{{ url_for('static', filename=citation_img) }}" alt="Citation">
+        {% endif %}
     </div>
 
     <a class="cell" href="{{ url_for('drinks') }}" id="cell-stats">
@@ -37,7 +39,9 @@
     </a>
 
     <div class="cell" id="cell-citation">
-        <img src="../static/images/citation.png" alt="Citation">
+        {% if citation_img %}
+            <img src="{{ url_for('static', filename=citation_img) }}" alt="Citation">
+        {% endif %}
     </div>
 
     <a class="cell" href="{{ url_for('drinks') }}" id="cell-stats">
