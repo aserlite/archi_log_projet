@@ -8,8 +8,9 @@
 {% endblock %}
 
 {% block content %}
+<input type="hidden" name="party_id" value="{{ party.id_soiree }}">
 
-<div id="cell-container">
+<div id="cell-container" >
     <div id="cell-infos" class="cell">
 
         {% if party.status == 'ongoing' %}
@@ -127,6 +128,12 @@
             </table>
         </div>
     </div>
+
+    <style>
+        #cell-container{
+            grid-auto-rows: auto;
+        }
+    </style>
 {% endif %}
 
 <script src="../static/scripts/party_view.js" defer></script>
