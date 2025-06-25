@@ -76,8 +76,9 @@ def calculer_taux_alcoolemie(user_id, party_id=None):
     taux = round(taux, 3)
 
     heure_reprise = None
+
     if taux >= 0.5:
-        for h in range(24):
+        for h in range(1, 25):
             alcool_total_h = 0
             for conso in consommations:
                 if not Drink.is_alcoholic(cursor, conso.id_boisson):
@@ -93,8 +94,11 @@ def calculer_taux_alcoolemie(user_id, party_id=None):
                 if alcool_restant > 0:
                     alcool_total_h += alcool_restant
             taux_h = alcool_total_h / (float(poids) * float(coef)) if poids and coef else 0
-            if taux_h < 0.5:
-                heure_reprise = (instant_T + timedelta(hours=h)).replace(second=0, microsecond=0).strftime("%H:%M")
+            if taux_h > 0.5:
+                heure_reprise_dt = (instant_T + timedelta(hours=h)).replace(second=0, microsecond=0)
+                heure_reprise = heure_reprise_dt.strftime("%H:%M")
+                if heure_reprise_dt.date() > instant_T.date():
+                    heure_reprise = f"demain à {heure_reprise}"
                 break
 
     return {"taux": taux, "heure_reprise": heure_reprise}
