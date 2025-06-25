@@ -108,6 +108,28 @@ def join_party():
     else:
         return render_template("party/join.html")
 
+def leave_party():
+    if not is_authenticated():
+        return jsonify({"error": "Non authentifié"}), 401
+    party_id = request.args.get("party_id") or request.form.get("code")
+    if not party_id:
+        return jsonify({"error": "ID de fête manquant"}), 400
+    try:
+        with mysql.connection.cursor() as cur:
+            user_id = session.get("user_id")
+            party = Party.get_by_id(cur, party_id)
+            if not party:
+                return jsonify({"error": "Fête introuvable"}), 404
+            if Party.is_user_invited(cur, party_id, user_id):
+                Party.remove_invitation(cur, party_id, user_id)
+                mysql.connection.commit()
+                return redirect(url_for('index'))
+            else:
+                return jsonify({"error": "Vous n'etes pas invité à cette fête."}), 403
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
 def party_stats(party_id):
     if not is_authenticated():
         return jsonify({"error": "Non authentifié"}), 401

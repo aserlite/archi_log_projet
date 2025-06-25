@@ -79,6 +79,14 @@ class Party:
                        """, (party_id, user_id))
 
     @staticmethod
+    def remove_invitation(cursor, party_id, user_id):
+        cursor.execute("""
+                       DELETE FROM invitation
+                       WHERE id_soiree = %s
+                         AND id_user = %s
+                       """, (party_id, user_id))
+
+    @staticmethod
     def close(cursor, party_id):
         cursor.execute("""
                        UPDATE soiree

@@ -105,6 +105,13 @@ def join_party_route():
         return redirect("/login")
     else:
         return join_party()
+    
+@app.route('/party/leave', methods=['POST'])
+def leave_party_route():
+    if "user_id" not in session:
+        return redirect("/login")
+    else:
+        return leave_party()
 
 @app.route('/party/add_conso', methods=['POST', 'GET'])
 def add_conso_route():

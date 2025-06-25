@@ -11,4 +11,13 @@
     </div>
     <button type="submit" class="btn btn-primary">Créer la fête</button>
 </form>
+
+<form action="/party/join" method="post">
+    <h2>Rejoindre une fête</h2>
+    <div class="form-group">
+        <label for="code">Code de la fête</label>
+        <input type="text" id="code" name="code" class="form-control" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Rejoindre la fête</button>
+</form>
 {% endblock %}
