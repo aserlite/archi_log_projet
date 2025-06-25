@@ -173,7 +173,10 @@ tr:hover {
 
 #cell-historique {
     grid-column: span 3;
-    /* grid-row: span 5; */
+    grid-row: span 4;
+}
+#cell-historique .table-container{
+    max-height: 450px ;
 }
 
 
