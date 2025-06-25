@@ -17,14 +17,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Hammersmith+One&family=Lilita+One&display=swap"
-        rel="stylesheet">
+          rel="stylesheet">
 
     <!-- police inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    {% block stylesheets %}{% endblock %}
 </head>
 
 <body>
@@ -37,7 +36,7 @@
             {% else %}
             <p>Bienvenue ploucos, fais toi un compte !</p>
             {% endif %}
-            <a href="/login">
+            <a href="{{ url_for('profile_route') }}">
                 <img src="../static/images/user.png" alt="User Icon" id="user-icon"></a>
         </div>
     </nav>

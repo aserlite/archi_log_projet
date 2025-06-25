@@ -2,117 +2,63 @@
 
 {% block title %}Fésoif - {{ party.nom }}{% endblock %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="../static/styles/party_view.css">
+{% endblock %}
+
 {% block content %}
 <h2>{{ party.nom }}</h2>
 <ul>
     <li><strong>Date :</strong> {{ party.date }}</li>
-    <li><strong>Code d'invitation :</strong> {{ party.code }}</li>
-</ul>
-{% if qr_code %}
-    <img src="data:image/png;base64,{{ qr_code }}" alt="QR Code">
-{% endif %}
+
 {% if party.status == 'ongoing' %}
-{% if party.id_organisateur == session['user_id'] %}
-<form action="{{ url_for('close_party_route', party_id=party.id_soiree) }}" method="post">
-    <button type="submit" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir fermer la fête ?')">
-        Fermer la fête
-    </button>
-</form>
+
+    {% if party.id_organisateur == session['user_id'] %}
+        <form action="{{ url_for('close_party_route', party_id=party.id_soiree) }}" method="post">
+            <button type="submit" class="btn btn-danger"
+                    onclick="return confirm('Êtes-vous sûr de vouloir fermer la fête ?')">
+                Fermer la fête
+            </button>
+        </form>
+    {% endif %}
+
+    <li><strong>Code d'invitation :</strong> {{ party.code }}</li>
+    </ul>
+
+    {% if qr_code %}
+        <img src="data:image/png;base64,{{ qr_code }}" alt="QR Code">
+    {% endif %}
+
+    <form id="add-conso-form" method="post" action="{{ url_for('add_conso_route') }}">
+        <input type="hidden" name="party_id" value="{{ party.id_soiree }}">
+        <div class="mb-3">
+            <label for="drink-search" class="form-label">Rechercher une boisson :</label>
+            <input type="text" id="drink-search" class="form-control" autocomplete="off"
+                   placeholder="Tapez le nom d'une boisson...">
+            <div id="drink-suggestions" class="list-group"></div>
+        </div>
+        <input type="hidden" name="drink_id" id="selected-drink-id">
+        <div class="mb-3">
+            <label for="quantity" class="form-label">Nombre de verres :</label>
+            <input type="number" name="quantity" id="quantity" class="form-control" min="1" value="1" required>
+        </div>
+        <div class="mb-3">
+            <label for="comment" class="form-label">Commentaire (optionnel) :</label>
+            <input type="text" name="comment" id="comment" class="form-control" maxlength="255">
+        </div>
+        <button type="submit" class="btn btn-primary">Ajouter un verre</button>
+    </form>
+
+
 {% else %}
-<p>La fête est en cours !</p>
+    </ul>
+    <p>La fête est terminée.</p>
 {% endif %}
-{% else %}
-<p>La fête est terminée.</p>
-{% endif %}
+<h3>Tes stats</h3>
+<p><strong>Nombre de verres consommés :</strong> <span id="drink-count">{{ user_drink_count }}</span></p>
+<h3>Stats des participants</h3>
+<ul id="party-stats"></ul>
 
-<form id="add-conso-form" method="post" action="{{ url_for('add_conso_route') }}">
-    <input type="hidden" name="party_id" value="{{ party.id_soiree }}">
-    <div class="mb-3">
-        <label for="drink-search" class="form-label">Rechercher une boisson :</label>
-        <input type="text" id="drink-search" class="form-control" autocomplete="off" placeholder="Tapez le nom d'une boisson...">
-        <div id="drink-suggestions" class="list-group"></div>
-    </div>
-    <input type="hidden" name="drink_id" id="selected-drink-id">
-    <div class="mb-3">
-        <label for="quantity" class="form-label">Nombre de verres :</label>
-        <input type="number" name="quantity" id="quantity" class="form-control" min="1" value="1" required>
-    </div>
-    <div class="mb-3">
-        <label for="comment" class="form-label">Commentaire (optionnel) :</label>
-        <input type="text" name="comment" id="comment" class="form-control" maxlength="255">
-    </div>
-    <button type="submit" class="btn btn-primary">Ajouter un verre</button>
-</form>
-
-<script>
-    document.getElementById('drink-search').addEventListener('input', function() {
-    const query = this.value;
-    if (query.length < 2) {
-        document.getElementById('drink-suggestions').innerHTML = '';
-        return;
-    }
-    fetch('{{ url_for("search_drinks_route") }}?q=' + encodeURIComponent(query))
-        .then(response => response.json())
-        .then(data => {
-            const suggestions = data.drinks.map(drink =>
-                `<a href="#" class="list-group-item list-group-item-action drink-suggestion" data-id="${drink.id}">${drink.nom}</a>`
-            ).join('');
-            document.getElementById('drink-suggestions').innerHTML = suggestions;
-        });
-});
-
-document.getElementById('drink-suggestions').addEventListener('click', function(e) {
-    if (e.target && e.target.matches('a[data-id]')) {
-        e.preventDefault();
-        document.getElementById('drink-search').value = e.target.textContent;
-        document.getElementById('selected-drink-id').value = e.target.getAttribute('data-id');
-        this.innerHTML = '';
-    }
-});
-</script>
-
-<script>
-document.getElementById('add-conso-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const form = this;
-    const data = new FormData(form);
-    fetch(form.action, {
-        method: 'POST',
-        body: data,
-        headers: {
-            'X-Requested-With': 'XMLHttpRequest'
-        }
-    })
-    .then(response => response.json())
-    .then(result => {
-        if (result.success) {
-            document.getElementById('quantity').value = 1;
-            document.getElementById('comment').value = '';
-        }
-    })
-});
-</script>
-
-<style>
-#drink-suggestions .drink-suggestion {
-    display: block;
-    padding: 8px 12px;
-    border-radius: 6px;
-    margin-bottom: 4px;
-    transition: background 0.2s;
-    cursor: pointer;
-    border: 1px solid #e0e0e0;
-}
-#drink-suggestions .drink-suggestion:nth-child(odd) {
-    background: #f8f9fa;
-}
-#drink-suggestions .drink-suggestion:nth-child(even) {
-    background: #e3e6f0;
-}
-#drink-suggestions .drink-suggestion:hover {
-    background: #cce5ff;
-}
-</style>
 <script src="../static/scripts/party_view.js" defer></script>
 
 {% endblock %}

@@ -7,30 +7,44 @@
 <link rel="stylesheet" href="../static/styles/style.css">
 
 <div id="cell-container">
-    <!-- <a href="/party/create.html"> -->
-        <div class="cell" id="cell-soiree">
-            <h3>Nouvelle soirée</h3>
-            <p>Elle n'attend que toi</p>
-        </div>
-    <!-- </a> -->
+    {% if session.user_id %}
+    <a class="cell" href="{{ url_for('create_party_route') }}" id="cell-soiree">
+        <h3>Nouvelle soirée</h3>
+        <p>Elle n'attend que toi</p>
+    </a>
 
-    <!-- <a href="/"> -->
-        <div class="cell" id="cell-historique">
-            <h3>Tes anciennes soirées</h3>
-            <p>S'agirait de doser</p>
-        </div>
-    <!-- </a> -->
+    <a class="cell" href="{{ url_for('create_party_route') }}" id="cell-historique">
+        <h3>Tes stats et anciennes soirées</h3>
+        <p>S'agirait de doser</p>
+    </a>
 
     <div class="cell" id="cell-citation">
         <img src="../static/images/citation.png" alt="Citation">
     </div>
 
-    <!-- <a href="/user/profile.html"> -->
-        <div class="cell" id="cell-stats">
-            <h3>Stats</h3>
-            <p>C'est fameux</p>
-        </div>
-    <!-- </a> -->
+    <a class="cell" href="{{ url_for('drinks') }}" id="cell-stats">
+        <h3>Notre collection de cocktails</h3>
+        <p>Ca donne soif tout ca</p>
+    </a>
+    {% else %}
+    <a href="{{ url_for('login_route') }}" class="cell" id="cell-soiree">
+            <h3>Connecte-toi pour créer une soirée</h3>
+            <p>Elle n'attend que toi</p>
+    </a>
+    <a href="{{ url_for('register_route') }}"  class="cell" id="cell-historique">
+            <h3>Pas encore inscrit ?</h3>
+            <p>Rejoins-nous !</p>
+    </a>
+
+    <div class="cell" id="cell-citation">
+        <img src="../static/images/citation.png" alt="Citation">
+    </div>
+
+    <a class="cell" href="{{ url_for('drinks') }}" id="cell-stats">
+        <h3>Notre collection de cocktails</h3>
+        <p>Ca donne soif tout ca</p>
+    </a>
+    {% endif %}
 </div>
 
 {% endblock %}

@@ -20,13 +20,9 @@ def register():
         session_token = uuid.uuid4().hex
         try:
             with mysql.connection.cursor() as cur:
-                cur.execute(
-                    "INSERT INTO utilisateur (nom, prénom, email, password, âge, poids, genre, session_token) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
-                    (nom, prénom, email, password, âge, poids, genre, session_token)
-                )
+                User.create(cur, nom, prénom, email, password, âge, poids, genre, session_token)
                 mysql.connection.commit()
-                cur.execute("SELECT id_user FROM utilisateur WHERE email = %s", (email,))
-                user_id = cur.fetchone()[0]
+                user_id = User.get_id_by_email(cur, email)
                 session["user_id"] = user_id
                 session["session_token"] = session_token
             return redirect(url_for('index'))
@@ -42,17 +38,11 @@ def login():
         hashed_password = hash_password(password)
         try:
             with mysql.connection.cursor() as cur:
-                cur.execute("SELECT * FROM utilisateur WHERE email = %s", (email,))
-                row = cur.fetchone()
-                if row:
-                    user = User(*row)
-                    debug_data = user.__dict__.copy()
-                    debug_data["hashed_password"] = hashed_password
-                    return jsonify(debug_data)
+                user = User.get_by_email(cur, email)
+                if user:
                     if user.password == hashed_password:
                         session_token = uuid.uuid4().hex
-                        cur.execute("UPDATE utilisateur SET session_token = %s WHERE id_user = %s",
-                                    (session_token, user.id_user))
+                        User.update_session_token(cur, user.id_user, session_token)
                         mysql.connection.commit()
                         session["user_id"] = user.id_user
                         session["session_token"] = session_token
@@ -83,20 +73,15 @@ def is_authenticated():
     if not user_id or not session_token:
         return False
     with mysql.connection.cursor() as cur:
-        cur.execute("SELECT session_token FROM utilisateur WHERE id_user = %s", (user_id,))
-        row = cur.fetchone()
-        if row and row[0] == session_token:
+        token = User.get_session_token(cur, user_id)
+        if token and token == session_token:
             return True
     return False
 
 
 def get_user_by_id(user_id):
     with mysql.connection.cursor() as cur:
-        cur.execute("SELECT * FROM utilisateur WHERE id_user = %s", (user_id,))
-        row = cur.fetchone()
-        if row:
-            return User(*row)
-    return None
+        return User.get_by_id(cur, user_id)
 
 
 def get_current_user():
@@ -111,9 +96,39 @@ def profile():
     if not user_id:
         return redirect(url_for('login'))
     with mysql.connection.cursor() as cur:
-        cur.execute("SELECT * FROM utilisateur WHERE id_user = %s", (user_id,))
-        row = cur.fetchone()
-        if row:
-            user = User(*row)
+        user = User.get_by_id(cur, user_id)
+        if user:
             return render_template("user/profile.html", user=user)
     return redirect(url_for('login'))
+
+def edit_profile():
+    user_id = session.get("user_id")
+    if not user_id:
+        return redirect(url_for('login'))
+    if request.method == "POST":
+        nom = request.form.get("nom")
+        prénom = request.form.get("prénom")
+        email = request.form.get("email")
+        âge = request.form.get("âge")
+        poids = request.form.get("poids")
+        genre = request.form.get("genre")
+        current_password = request.form.get("current_password")
+        new_password = request.form.get("new_password")
+        with mysql.connection.cursor() as cur:
+            user = User.get_by_id(cur, user_id)
+            if not user or user.password != hash_password(current_password):
+                return render_template("user/profile.html", user=user, error="Mot de passe actuel incorrect.")
+            if new_password:
+                password = hash_password(new_password)
+            else:
+                password = user.password
+            try:
+                User.update_profile(cur, user_id, nom, prénom, email, âge, poids, genre, password)
+                mysql.connection.commit()
+                return render_template("user/profile.html", user=User.get_by_id(cur, user_id), success="Profil mis à jour avec succès.")
+            except Exception as e:
+                return render_template("user/profile.html", user=user, error="Erreur lors de la mise à jour du profil.")
+    else:
+        with mysql.connection.cursor() as cur:
+            user = User.get_by_id(cur, user_id)
+        return render_template("user/profile.html", user=user)

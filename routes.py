@@ -66,6 +66,13 @@ def profile_route():
         return redirect("/login")
     return profile()
 
+@app.route("/profile/edit", methods=["POST"])
+def edit_profile_route():
+    if "user_id" not in session:
+        return redirect("/login")
+    else:
+        return edit_profile()
+
 
 # Routes pour les soirées
 @app.route("/create_party", methods=["GET", "POST"])
@@ -104,3 +111,7 @@ def add_conso_route():
         return redirect("/login")
     else:
         return add_conso()
+
+@app.route('/party/<int:party_id>/stats', methods=['GET'])
+def party_stats_route(party_id):
+    return party_stats(party_id)
