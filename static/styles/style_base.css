@@ -93,6 +93,7 @@ footer p {
     display: inline-block;
     margin:.5rem;
     transition: background 0.2s;
+    cursor: pointer;
 }
 .btn:hover {
     background: #444;
