@@ -36,7 +36,7 @@ if (drinkSearch) {
             .then(response => response.json())
             .then(data => {
                 let suggestions = data.drinks.map(drink =>
-                    `<a href="#" class="list-group-item list-group-item-action drink-suggestion" data-id="${drink.id}">${drink.nom}</a>`
+                    `<br><a href="#" class="list-group-item list-group-item-action drink-suggestion" data-id="${drink.id}">${drink.nom}</a> <br>`
                 ).join('');
                 if (data.drinks.length === 0) {
                     suggestions += `<a href="/drinks/create" class="list-group-item list-group-item-action text-success">Ajouter "${query}"</a>`;

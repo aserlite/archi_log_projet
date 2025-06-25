@@ -52,7 +52,7 @@ a {
     grid-row: span 3;
 }
 
-#cell-invitation img{
+#cell-invitation img {
     width: 30%;
 }
 
@@ -75,12 +75,12 @@ table {
     background-color: #fff;
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 thead {
     background-color: #222222;
-    color: white ;
+    color: white;
 }
 
 th, td {
@@ -140,20 +140,23 @@ tbody tr:hover {
 
 #drink-suggestions {
     position: absolute;
-    max-height: 200px;
+    max-height: 250px;
     overflow-y: auto;
     border-top: none;
-    z-index: 10;
+    z-index: 1000;
+    background: #fff;
+    width: 250px;
 }
 
 #drink-suggestions .list-group-item {
     width: 100%;
     padding: 10px;
+    margin-bottom: 8px;
     cursor: pointer;
 }
 
 #drink-suggestions .list-group-item:hover {
-    background-color: #f0f0f0;
+    text-decoration: underline
 }
 
 #add-conso-form button[type="submit"] {
@@ -172,14 +175,13 @@ tbody tr:hover {
 }
 
 
-
-
 #cell-historique {
     grid-column: span 3;
     grid-row: span 4;
 }
-#cell-historique .table-container{
-    max-height: 450px ;
+
+#cell-historique .table-container {
+    max-height: 450px;
 }
 
 
@@ -225,7 +227,7 @@ p {
 
 }
 
-#drinks-table, #stats-table{
+#drinks-table, #stats-table {
     max-height: max-content;
 }
 
