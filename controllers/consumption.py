@@ -4,6 +4,7 @@ from controllers.user import is_authenticated
 from models.consumption import Consumption
 from models.party import Party
 from models.user import User
+from models.drink import Drink
 from datetime import datetime
 
 
@@ -58,6 +59,8 @@ def calculer_taux_alcoolemie(user_id, party_id=None):
     consommations = Consumption.get_consumption_by_user_by_party(cursor, user_id, party_id)
     alcool_total = 0
     for conso in consommations:
+        if not Drink.is_alcoholic(cursor, conso.id_boisson):
+            continue
         if isinstance(conso.timestamp, str):
             conso_time = datetime.fromisoformat(conso.timestamp)
         else:

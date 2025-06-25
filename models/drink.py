@@ -47,3 +47,9 @@ class Drink:
         cursor.execute("SELECT id_boisson, nom FROM boisson ORDER BY RAND() LIMIT 1")
         row = cursor.fetchone()
         return [{'id': row[0], 'nom': row[1]}] if row else []
+
+    @staticmethod
+    def is_alcoholic(cursor, id_boisson):
+        cursor.execute("SELECT alcool FROM boisson WHERE id_boisson = %s", (id_boisson,))
+        res = cursor.fetchone()
+        return res and res[0] == 1
