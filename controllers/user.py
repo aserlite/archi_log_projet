@@ -130,3 +130,13 @@ def edit_profile():
         with mysql.connection.cursor() as cur:
             user = User.get_by_id(cur, user_id)
         return render_template("user/profile.html", user=user)
+
+def stats():
+    user_id = session.get("user_id")
+    if not user_id:
+        return redirect(url_for('login'))
+    with mysql.connection.cursor() as cur:
+        user = User.get_by_id(cur, user_id)
+        stats = User.get_stats(cur, user_id)
+        parties = User.get_parties_with_counts(cur, user_id)
+    return render_template("user/stats.html", user=user, stats=stats, parties=parties)

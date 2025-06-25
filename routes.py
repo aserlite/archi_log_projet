@@ -116,3 +116,9 @@ def add_conso_route():
 @app.route('/party/<int:party_id>/stats', methods=['GET'])
 def party_stats_route(party_id):
     return party_stats(party_id)
+
+@app.route('/stats')
+def stats_route():
+    if "user_id" not in session:
+        return redirect("/login")
+    return stats()

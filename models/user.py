@@ -75,3 +75,37 @@ class User:
         )
         row = cursor.fetchone()
         return User(*row) if row else None
+
+    @staticmethod
+    def get_stats(cursor, id_user):
+        cursor.execute(
+            "SELECT COUNT(*) FROM consommation WHERE id_user = %s",
+            (id_user,)
+        )
+        total_consumptions = cursor.fetchone()[0]
+
+        cursor.execute(
+            "SELECT COUNT(DISTINCT id_soiree) FROM consommation WHERE id_user = %s",
+            (id_user,)
+        )
+        total_parties = cursor.fetchone()[0]
+
+        return {
+            "total_consumptions": total_consumptions,
+            "total_parties": total_parties
+        }
+
+    @staticmethod
+    def get_parties_with_counts(cursor, id_user):
+        cursor.execute(
+            """
+            SELECT s.id_soiree, s.nom, COUNT(c.id_boisson) as nb_verres
+            FROM soiree s
+                     JOIN consommation c ON s.id_soiree = c.id_soiree
+            WHERE c.id_user = %s
+            GROUP BY s.id_soiree, s.nom
+            ORDER BY s.date DESC
+            """,
+            (id_user,)
+        )
+        return cursor.fetchall()

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Fésoif - Profil{% endblock %}
+
+{% block content %}
+<a href="{{ url_for('index') }}">Retour à l'accueil</a>
+
+<h2>Statistiques globales</h2>
+<p>Total de verres : {{ stats.total_consumptions }}</p>
+<p>Total de soirées : {{ stats.total_parties }}</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>Nom de la soirée</th>
+            <th>Nombre de verres</th>
+            <th>Détail</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for soiree in parties %}
+        <tr>
+            <td>{{ soiree[1] }}</td>
+            <td>{{ soiree[2] }}</td>
+            <td><a href="{{ url_for('view_party_route', party_id=soiree[0]) }}">Voir</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
+
+
