@@ -6,8 +6,7 @@ import uuid
 
 def register():
     if request.method == "POST":
-        nom = request.form.get("nom")
-        prénom = request.form.get("prénom")
+        pseudo = request.form.get("pseudo")
         email = request.form.get("email")
         password = request.form.get("password")
         confirm = request.form.get("confirm")
@@ -20,7 +19,7 @@ def register():
         session_token = uuid.uuid4().hex
         try:
             with mysql.connection.cursor() as cur:
-                User.create(cur, nom, prénom, email, password, âge, poids, genre, session_token)
+                User.create(cur, pseudo, email, password, âge, poids, genre, session_token)
                 mysql.connection.commit()
                 user_id = User.get_id_by_email(cur, email)
                 session["user_id"] = user_id
@@ -106,8 +105,7 @@ def edit_profile():
     if not user_id:
         return redirect(url_for('login'))
     if request.method == "POST":
-        nom = request.form.get("nom")
-        prénom = request.form.get("prénom")
+        pseudo = request.form.get("pseudo")
         email = request.form.get("email")
         âge = request.form.get("âge")
         poids = request.form.get("poids")
@@ -123,7 +121,7 @@ def edit_profile():
             else:
                 password = user.password
             try:
-                User.update_profile(cur, user_id, nom, prénom, email, âge, poids, genre, password)
+                User.update_profile(cur, user_id, pseudo, email, âge, poids, genre, password)
                 mysql.connection.commit()
                 return render_template("user/profile.html", user=User.get_by_id(cur, user_id), success="Profil mis à jour avec succès.")
             except Exception as e:

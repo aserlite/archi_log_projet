@@ -1,8 +1,7 @@
 class User:
-    def __init__(self, id_user, nom, prénom, email, password, âge, poids, genre, create_dt, session_token):
+    def __init__(self, id_user, pseudo, email, password, âge, poids, genre, create_dt, session_token):
         self.id_user = id_user
-        self.nom = nom
-        self.prénom = prénom
+        self.pseudo = pseudo
         self.email = email
         self.password = password
         self.âge = âge
@@ -12,7 +11,7 @@ class User:
         self.session_token = session_token
 
     def __repr__(self):
-        return (f"User(id_user={self.id_user}, nom={self.nom}, prénom={self.prénom}, "
+        return (f"User(id_user={self.id_user}, pseudo={self.pseudo}, "
                 f"email={self.email}, password=****, âge={self.âge}, poids={self.poids}, "
                 f"genre={self.genre}, create_dt={self.create_dt}, session_token=****)")
 
@@ -23,10 +22,10 @@ class User:
         return [User(*row) for row in rows]
 
     @staticmethod
-    def create(cursor, nom, prénom, email, password, âge, poids, genre, session_token):
+    def create(cursor, pseudo, email, password, âge, poids, genre, session_token):
         cursor.execute(
-            "INSERT INTO utilisateur (nom, prénom, email, password, âge, poids, genre, session_token) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
-            (nom, prénom, email, password, âge, poids, genre, session_token)
+            "INSERT INTO utilisateur (pseudo, email, password, âge, poids, genre, session_token) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+            (pseudo, email, password, âge, poids, genre, session_token)
         )
 
     @staticmethod
@@ -62,8 +61,8 @@ class User:
         cursor.execute("DELETE FROM utilisateur WHERE id_user = %s", (id_user,))
 
     @staticmethod
-    def update_profile(cursor, id_user, nom, prénom, email, âge, poids, genre, password):
+    def update_profile(cursor, id_user, pseudo, email, âge, poids, genre, password):
         cursor.execute(
-            "UPDATE utilisateur SET nom=%s, prénom=%s, email=%s, âge=%s, poids=%s, genre=%s, password=%s WHERE id_user=%s",
-            (nom, prénom, email, âge, poids, genre, password, id_user)
+            "UPDATE utilisateur SET pseudo=%s, email=%s, âge=%s, poids=%s, genre=%s, password=%s WHERE id_user=%s",
+            (pseudo, email, âge, poids, genre, password, id_user)
         )
