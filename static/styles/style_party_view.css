@@ -90,13 +90,13 @@ a {
 }
 
 #cell-invitation img {
-    width: 70%;
+    width: 45%;
 }
 
 
 #cell-participants {
-    grid-column: span 3;
-    grid-row: span 3;
+    grid-column: span 2;
+    grid-row: span 4;
 }
 
 .table-container {
@@ -216,8 +216,8 @@ tbody tr:hover {
 
 
 #cell-historique {
-    grid-column: span 2;
-    grid-row: span 4;
+    grid-column: span 3;
+    grid-row: span 5;
 }
 
 #cell-historique .table-container {
