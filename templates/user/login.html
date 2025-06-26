@@ -7,7 +7,7 @@
   <div class="alert alert-danger">{{ error }}</div>
 {% endif %}
 <link rel="stylesheet" href="../static/styles/style_login.css">
-<form action="/login" method="post">
+<form action="/login{% if request.args.get('code') %}?code={{ request.args.get('code') }}{% endif %}" method="post">
     <h1>Connexion</h1>
     <label for="email">email :</label>
     <input type="email" id="email" name="email" required><br><br>
@@ -17,5 +17,8 @@
 
     <button type="submit">Se connecter</button>
 </form>
-<p>Pas encore inscrit ? <a href="/register">Inscrivez-vous ici</a>.</p>
-{% endblock %}
+<p>Pas encore inscrit ?
+    <a href="/register{% if request.args.get('code') %}?code={{ request.args.get('code') }}{% endif %}">
+      Inscrivez-vous ici
+    </a>
+</p>{% endblock %}

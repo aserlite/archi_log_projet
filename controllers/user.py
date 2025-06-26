@@ -24,7 +24,11 @@ def register():
                 user_id = User.get_id_by_email(cur, email)
                 session["user_id"] = user_id
                 session["session_token"] = session_token
-            return redirect(url_for('index'))
+            code = request.args.get("code")
+            if code:
+                return redirect(url_for('join_party_route', code=code))
+            else:
+                return redirect(url_for('index'))
         except Exception as e:
             return jsonify({"error": str(e)}), 500
     return render_template("user/register.html")
@@ -45,6 +49,10 @@ def login():
                         mysql.connection.commit()
                         session["user_id"] = user.id_user
                         session["session_token"] = session_token
+                        code = request.args.get("code")
+                        if code:
+                            return redirect(url_for('jo in_party_route', code=code))
+
                         return redirect(url_for('index'))
                     else:
                         return render_template("user/login.html", error="Mot de passe incorrect")

@@ -8,7 +8,7 @@ from controllers.utils import generate_qr_code, calculer_taux_alcoolemie
 
 def create_party():
     if not is_authenticated():
-        return redirect(url_for('login'))
+        return redirect(url_for('login_route'))
     party_id = is_user_in_party()
     if party_id:
         return redirect(url_for('view_party_route', party_id=party_id))
@@ -36,8 +36,9 @@ def view_party(party_id):
             user_id = session.get("user_id")
             if party.id_organisateur != user_id and not Party.is_user_invited(cur, party_id, user_id):
                 return jsonify({"error": "Unauthorized access"}), 403
+            qr_url = url_for('join_party_route', _external=True) + f"?code={party.code}"
+            qr_code = generate_qr_code(qr_url)
             join_url = url_for('join_party_route', _external=True) + f"?code={party.code}"
-            qr_code = generate_qr_code(join_url)
             user_drink_count = Party.count_user_drinks(cur, party_id, user_id)
             return render_template(
                 "party/view.html",
@@ -90,9 +91,9 @@ def close_party(party_id):
         return jsonify({"error": str(e)}), 500
 
 def join_party():
-    if not is_authenticated():
-        return redirect(url_for('login'))
     code = request.args.get("code") or request.form.get("code")
+    if not is_authenticated():
+        return redirect(url_for('login_route', code=code) if code else url_for('login_route'))
     if code:
         try:
             with mysql.connection.cursor() as cur:

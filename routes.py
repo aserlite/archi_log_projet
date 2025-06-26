@@ -101,10 +101,7 @@ def close_party_route(party_id):
 
 @app.route('/party/join', methods=['POST', 'GET'])
 def join_party_route():
-    if "user_id" not in session:
-        return redirect("/login")
-    else:
-        return join_party()
+    return join_party()
     
 @app.route('/party/leave', methods=['POST'])
 def leave_party_route():
