@@ -118,3 +118,23 @@ function formatHour(dateString) {
     const minutes = String(date.getUTCMinutes()).padStart(2, '0');
     return `${hours}:${minutes}`;
 }
+
+// Copier le code d'invitation dans le presse-papier
+const copyButton = document.getElementById('logo_copier');
+const code = document.getElementById('party-invitation-code');
+const pathPrimary = document.getElementById('primary');
+
+copyButton.addEventListener('click', function () {
+    if (navigator.clipboard && code) {
+        navigator.clipboard.writeText(code.textContent.trim())
+            .then(() => {
+                if (pathPrimary) {
+                    pathPrimary.removeAttribute('stroke');
+                    pathPrimary.setAttribute('fill', '#fff');
+                }
+            })
+            .catch(err => {
+                console.error('Erreur de copie :', err);
+            });
+    }
+});

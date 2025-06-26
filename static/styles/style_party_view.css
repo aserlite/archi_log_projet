@@ -25,6 +25,8 @@ a {
     grid-row: span 2;
 }
 
+
+
 #cell-infos button {
     font-family: 'Inter', sans-serif;
     background-color: #af6f4c;
@@ -35,7 +37,7 @@ a {
     text-align: center;
     text-decoration: none;
     font-size: 16px;
-    border-radius: 10px;
+    border-radius: 6px;
     cursor: pointer;
     transition-duration: 0.2s;
 }
@@ -52,18 +54,54 @@ a {
     grid-row: span 3;
 }
 
-#cell-invitation img{
-    width: 30%;
+#qr-code-container {
+    margin: 1em;
+    display: flex;
+    gap: 2em;
+}
+
+#code_invitation {
+    margin-top: 2em;
+}
+
+
+#copy-cell {
+    margin-top: 1em;
+    border-radius: 6px;
+    padding: 1em;
+    background-color: #4caf50;
+    display: flex;
+    width: fit-content;
+    justify-content: center;
+    align-items: center;
+}
+
+#copy-cell p {
+    font-family: 'Inter';
+    font-size: 1.2em;
+    color: white;
+    font-weight: 400;
+}
+
+#logo_copier {
+    cursor: pointer;
+    display: inline-block;
+    margin-left: 1em;
+}
+
+#cell-invitation img {
+    width: 70%;
 }
 
 
 #cell-participants {
-    grid-column: span 2;
+    grid-column: span 3;
     grid-row: span 3;
 }
 
 .table-container {
-    max-height: 300px; /* ou ce que tu veux */
+    max-height: 300px;
+    /* ou ce que tu veux */
     overflow-y: auto;
     border-radius: 8px;
 }
@@ -75,21 +113,23 @@ table {
     background-color: #fff;
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 thead {
     background-color: #222222;
-    color: white ;
+    color: white;
 }
 
-th, td {
+th,
+td {
     padding: 12px 15px;
     text-align: left;
     border-bottom: 1px solid #eee;
 }
 
-tbody th, tbody td {
+tbody th,
+tbody td {
     color: #222222;
 }
 
@@ -134,7 +174,7 @@ tbody tr:hover {
 
 #add-conso-form input:focus {
     outline: none;
-    border-color: #3b4c57;
+    border-color: #4caf50;
     box-shadow: 0 0 3px rgba(52, 152, 219, 0.3);
 }
 
@@ -157,7 +197,7 @@ tbody tr:hover {
 }
 
 #add-conso-form button[type="submit"] {
-    background-color: #acbe1c;
+    background-color: #4caf50;
     color: white;
     padding: 10px 16px;
     border: none;
@@ -168,18 +208,19 @@ tbody tr:hover {
 }
 
 #add-conso-form button[type="submit"]:hover {
-    background-color: #a2b419;
+    background-color: #388e3c;
 }
 
 
 
 
 #cell-historique {
-    grid-column: span 3;
+    grid-column: span 2;
     grid-row: span 4;
 }
-#cell-historique .table-container{
-    max-height: 450px ;
+
+#cell-historique .table-container {
+    max-height: 450px;
 }
 
 
@@ -222,10 +263,15 @@ p {
         grid-row: span 2;
     }
 
+    #qr-code-container {
+        flex-direction: column;
+    }
+
 
 }
 
-#drinks-table, #stats-table{
+#drinks-table,
+#stats-table {
     max-height: max-content;
 }
 
