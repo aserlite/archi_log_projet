@@ -180,20 +180,23 @@ tbody tr:hover {
 
 #drink-suggestions {
     position: absolute;
-    max-height: 200px;
+    max-height: 250px;
     overflow-y: auto;
     border-top: none;
-    z-index: 10;
+    z-index: 1000;
+    background: #fff;
+    width: 250px;
 }
 
 #drink-suggestions .list-group-item {
     width: 100%;
     padding: 10px;
+    margin-bottom: 8px;
     cursor: pointer;
 }
 
 #drink-suggestions .list-group-item:hover {
-    background-color: #f0f0f0;
+    text-decoration: underline
 }
 
 #add-conso-form button[type="submit"] {
@@ -210,8 +213,6 @@ tbody tr:hover {
 #add-conso-form button[type="submit"]:hover {
     background-color: #388e3c;
 }
-
-
 
 
 #cell-historique {
@@ -270,8 +271,7 @@ p {
 
 }
 
-#drinks-table,
-#stats-table {
+#drinks-table, #stats-table {
     max-height: max-content;
 }
 

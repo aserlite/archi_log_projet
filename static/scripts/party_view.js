@@ -36,7 +36,7 @@ if (drinkSearch) {
             .then(response => response.json())
             .then(data => {
                 let suggestions = data.drinks.map(drink =>
-                    `<a href="#" class="list-group-item list-group-item-action drink-suggestion" data-id="${drink.id}">${drink.nom}</a>`
+                    `<br><a href="#" class="list-group-item list-group-item-action drink-suggestion" data-id="${drink.id}">${drink.nom}</a> <br>`
                 ).join('');
                 if (data.drinks.length === 0) {
                     suggestions += `<a href="/drinks/create" class="list-group-item list-group-item-action text-success">Ajouter "${query}"</a>`;
@@ -94,7 +94,7 @@ function updatePartyStats() {
                     stat => `<tr${stat.user_id == currentUserId ? ' class="current-user-row"' : ''}>
                         <td>${stat.user}</td>
                         <td>${stat.count}</td>
-                        <td>${stat.alcoolemie ?? '-'}</td>
+                        <td>${stat.alcoolemie.taux ?? '-'}</td>
                     </tr>`
                 ).join('');
             }
@@ -118,6 +118,24 @@ function formatHour(dateString) {
     const minutes = String(date.getUTCMinutes()).padStart(2, '0');
     return `${hours}:${minutes}`;
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+    const randomBtn = document.getElementById('random-drink-btn');
+    if (randomBtn) {
+        randomBtn.addEventListener('click', function () {
+            fetch('/drinks/search?q=')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.drinks && data.drinks.length > 0) {
+                        const random = data.drinks[Math.floor(Math.random() * data.drinks.length)];
+                        document.getElementById('drink-search').value = random.nom;
+                        document.getElementById('selected-drink-id').value = random.id;
+                        document.getElementById('drink-suggestions').innerHTML = '';
+                    }
+                });
+        });
+    }
+});
 
 // Copier le code d'invitation dans le presse-papier
 const copyButton = document.getElementById('logo_copier');

@@ -12,7 +12,12 @@
     <a class="cell" href="{{ url_for('create_party_route') }}" id="cell-soiree">
         <h3>Soirée en cours</h3>
         <p>Nombre de verres : {{ current_party.user_drink_count }}</p>
-        <p>Taux d'alcool : {{ current_party.alcoolemie }} g/L</p>
+        <p>Taux d'alcool : {{ current_party.alcoolemie.taux }} g/L</p>
+        <div id="driving-warning" style="display:none; color: red; text-align: center; margin-bottom: 1em;">
+            <img src="{{ url_for('static', filename='images/pabien.png') }}" alt="Interdit de conduire"
+                 style="height:40px; vertical-align:middle;"> <br>
+            <span id="driving-warning-text"></span>
+        </div>
     </a>
     {% else %}
     <a class="cell" href="{{ url_for('create_party_route') }}" id="cell-soiree">
@@ -58,5 +63,21 @@
     </a>
     {% endif %}
 </div>
-
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    {% if current_party and current_party.alcoolemie.taux is not none %}
+    const taux = {{ current_party.alcoolemie.taux|float }};
+    if (taux > 0.5) {
+        document.getElementById('driving-warning').style.display = '';
+        {% if current_party.alcoolemie.heure_reprise %}
+        document.getElementById('driving-warning-text').textContent =
+            "Tu pourras reprendre le volant vers {{ current_party.alcoolemie.heure_reprise }}.";
+        {% else %}
+        document.getElementById('driving-warning-text').textContent =
+            "🚗 Interdit de conduire !";
+        {% endif %}
+    }
+    {% endif %}
+});
+</script>
 {% endblock %}

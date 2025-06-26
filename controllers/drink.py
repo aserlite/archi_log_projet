@@ -41,10 +41,10 @@ def single_drink(drink_id):
 
 def search_drinks():
     query = request.args.get('q', '')
-    if not query:
-        return jsonify({'drinks': []})
     with mysql.connection.cursor() as cur:
-        cur.execute("SELECT id_boisson, nom FROM boisson WHERE nom LIKE %s LIMIT 10", (f"%{query}%",))
-        drinks = [{'id': row[0], 'nom': row[1]} for row in cur.fetchall()]
+        if not query:
+            drinks = Drink.get_random(cur)
+        else:
+            drinks = Drink.search_by_name(cur, query)
     return jsonify({'drinks': drinks})
 
