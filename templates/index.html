@@ -110,39 +110,4 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-<style>
-    #citation-modal {
-    display: none;
-    position: fixed;
-    z-index: 2000;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0,0,0,0.8);
-    justify-content: center;
-    align-items: center;
-}
-
-#citation-modal.active {
-    display: flex;
-}
-
-#citation-modal img {
-    max-width: 90vw;
-    max-height: 80vh;
-    border-radius: 1em;
-    box-shadow: 0 8px 32px #000a;
-}
-
-#close-citation {
-    position: absolute;
-    top: 30px;
-    right: 40px;
-    color: #fff;
-    font-size: 2.5em;
-    cursor: pointer;
-    z-index: 2010;
-}
-</style>
 {% endblock %}
