@@ -211,7 +211,7 @@ copyButton.addEventListener('click', function () {
                         pathPrimary.setAttribute('stroke', '#fff');
                         pathPrimary.setAttribute('fill', 'none');
                     }
-                }, 5000);
+                }, 2000);
             })
             .catch(err => {
                 console.error('Erreur de copie :', err);
