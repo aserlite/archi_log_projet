@@ -37,9 +37,11 @@ def add_conso():
 
 
 def calculer_taux_alcoolemie(user_id, party_id=None):
+    from datetime import datetime, timedelta
+
     instant_T = datetime.now()
-    dose_alcool = 10
-    elimination = 0.15
+    dose_alcool = 10  # en grammes par dose bar
+    elimination = 0.15  # en g/L/h (taux sanguin)
 
     cursor = mysql.connection.cursor()
     user = User.get_by_id(cursor, user_id)
@@ -56,52 +58,46 @@ def calculer_taux_alcoolemie(user_id, party_id=None):
         return {"taux": 0, "heure_reprise": None}
 
     consommations = Consumption.get_consumption_by_user_by_party(cursor, user_id, party_id)
-    alcool_total = 0
+    taux_total = 0
+
     for conso in consommations:
         if not Drink.is_alcoholic(cursor, conso.id_boisson):
             continue
-        if isinstance(conso.timestamp, str):
-            conso_time = datetime.fromisoformat(conso.timestamp)
-        else:
-            conso_time = conso.timestamp
+        conso_time = datetime.fromisoformat(conso.timestamp) if isinstance(conso.timestamp, str) else conso.timestamp
         heures_ecoulees = (instant_T - conso_time).total_seconds() / 3600
         if heures_ecoulees < 0:
             continue
-        alcool_restant = dose_alcool * conso.quantité - elimination * heures_ecoulees
-        if alcool_restant > 0:
-            alcool_total += alcool_restant
+        # Calcul du taux par conso (corrigé)
+        quantite = float(conso.quantité)
+        taux_conso = (dose_alcool * quantite) / (float(poids) * float(coef)) - elimination * heures_ecoulees
+        if taux_conso > 0:
+            taux_total += taux_conso
 
-    taux = alcool_total / (float(poids) * float(coef)) if poids and coef else 0
-    taux = max(taux, 0)
-    taux = round(taux, 3)
+    taux_total = max(round(taux_total, 3), 0)
 
     heure_reprise = None
-
-    if taux >= 0.5:
+    if taux_total >= 0.5:
         for h in range(1, 25):
-            alcool_total_h = 0
+            taux_h = 0
             for conso in consommations:
                 if not Drink.is_alcoholic(cursor, conso.id_boisson):
                     continue
-                if isinstance(conso.timestamp, str):
-                    conso_time = datetime.fromisoformat(conso.timestamp)
-                else:
-                    conso_time = conso.timestamp
+                conso_time = datetime.fromisoformat(conso.timestamp) if isinstance(conso.timestamp, str) else conso.timestamp
                 heures_ecoulees = (instant_T + timedelta(hours=h) - conso_time).total_seconds() / 3600
                 if heures_ecoulees < 0:
                     continue
-                alcool_restant = dose_alcool * conso.quantité - elimination * heures_ecoulees
-                if alcool_restant > 0:
-                    alcool_total_h += alcool_restant
-            taux_h = alcool_total_h / (float(poids) * float(coef)) if poids and coef else 0
-            if taux_h > 0.5:
+                quantite = float(conso.quantité)
+                taux_conso = (dose_alcool * quantite) / (float(poids) * float(coef)) - elimination * heures_ecoulees
+                if taux_conso > 0:
+                    taux_h += taux_conso
+            if taux_h <= 0.5:
                 heure_reprise_dt = (instant_T + timedelta(hours=h)).replace(second=0, microsecond=0)
                 heure_reprise = heure_reprise_dt.strftime("%H:%M")
                 if heure_reprise_dt.date() > instant_T.date():
                     heure_reprise = f"demain à {heure_reprise}"
                 break
 
-    return {"taux": taux, "heure_reprise": heure_reprise}
+    return {"taux": taux_total, "heure_reprise": heure_reprise}
 
 def is_user_in_party():
     if not is_authenticated():
