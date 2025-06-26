@@ -147,3 +147,15 @@ def get_participants(party_id):
 @app.route('/party/<int:party_id>/history')
 def party_history_route(party_id):
     return get_consumption_by_party(party_id)
+
+
+@app.route('/party/delete_conso', methods=['POST'])
+def delete_drink_from_history():
+    if 'user_id' not in session:
+        return redirect('/login')
+    else:
+        id_user = int(request.form.get('id_user'))
+        id_soiree = int(request.form.get('id_soiree'))
+        id_boisson = int(request.form.get('id_boisson'))
+        timestamp = request.form.get('timestamp')
+    return delete_entry_history(id_user, id_soiree, id_boisson, timestamp)

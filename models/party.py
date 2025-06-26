@@ -1,4 +1,5 @@
 import secrets
+from datetime import datetime
 
 
 class Party:
@@ -135,3 +136,11 @@ class Party:
             GROUP BY u.id_user
         """, (party_id, party_id, party_id, party_id))
         return [{"user": row[0], "count": int(row[1]), "user_id": row[2]} for row in cursor.fetchall()]
+
+    @staticmethod
+    def delete_entry(cursor, id_user, id_soiree, id_boisson, timestamp):
+            
+            cursor.execute("""
+                        DELETE FROM consommation 
+                        WHERE id_user = %s AND id_soiree = %s AND id_boisson = %s AND timestamp = %s
+                        """, (id_user, id_soiree, id_boisson, timestamp))

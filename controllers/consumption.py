@@ -119,3 +119,4 @@ def get_consumption_by_party(party_id):
             return jsonify({"success": True, "consumption": consumption})
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
+    

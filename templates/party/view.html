@@ -9,6 +9,7 @@
 
 {% block content %}
 <input type="hidden" name="party_id" value="{{ party.id_soiree }}">
+<input type="hidden" name="user_id" value="{{ session['user_id'] }}">
 
 <div id="cell-container">
     <div id="cell-infos" class="cell">

@@ -159,3 +159,20 @@ def get_participants_for_party(party_id):
             return jsonify({"participants": party})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+def delete_entry_history(id_user, id_soiree, id_boisson, timestamp):
+    if not is_authenticated():
+        return jsonify({"success": False, "error": "Non authentifié"}), 401
+    try:
+        with mysql.connection.cursor() as cur:
+            Party.delete_entry(cur, id_user, id_soiree, id_boisson, timestamp)
+            return jsonify({
+                "id_user": id_user,
+                "id_soiree": id_soiree,
+                "id_boisson": id_boisson,
+                "timestamp": timestamp,
+                "success": True
+            })
+        return redirect(url_for('view_party_route', party_id=id_soiree))
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500

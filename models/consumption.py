@@ -29,7 +29,7 @@ class Consumption:
     @staticmethod
     def get_consumption_by_party(cursor, id_soiree):
         cursor.execute("""
-                       SELECT u.pseudo, b.nom, c.timestamp, c.commentaire,c.quantité
+                       SELECT c.id_user, u.pseudo, b.nom, c.timestamp, c.commentaire,c.quantité, c.id_soiree, c.id_boisson
                        FROM consommation c
                                 JOIN utilisateur u ON c.id_user = u.id_user
                                 JOIN boisson b ON c.id_boisson = b.id_boisson

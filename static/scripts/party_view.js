@@ -60,25 +60,69 @@ if (drinkSuggestions) {
 
 function updateHistoryTable() {
     const partyIdInput = document.querySelector('input[name="party_id"]');
+    const userIdInput = document.querySelector('input[name="user_id"]');
+    //console.log(partyId);
     if (!partyIdInput) return;
     const partyId = partyIdInput.value;
+    const userID = userIdInput.value;
     fetch(`/party/${partyId}/history`)
         .then(response => response.json())
         .then(data => {
             const tbody = document.getElementById('history-table-body');
             if (tbody && data.success) {
-                tbody.innerHTML = data.consumption.map(
-                    c => `<tr>
-                        <td>${c[0]}</td>
-                        <td>${c[1]}</td>
-                        <td>${formatHour(c[2])}</td>
-                        <td>${c[3]}</td>
-                        <td>${c[4]}</td>
-                    </tr>`
-                ).join('');
+                tbody.innerHTML = data.consumption.map(c => {
+                    const isUser = userID == c[0];
+                    return `
+                        <tr>
+                            <td>${c[1]}</td>
+                            <td>${c[2]}</td>
+                            <td>${formatHour(c[3])}</td>
+                            <td>${c[4]}</td>
+                            <td>${c[5]}</td>
+                            ${isUser ? `
+                                <td>
+                                    <form action="/party/delete_conso" method="post">
+                                        <input type="hidden" name="id_user" value="${c[0]}">
+                                        <input type="hidden" name="id_soiree" value="${c[6]}">
+                                        <input type="hidden" name="id_boisson" value="${c[7]}">
+                                        <input type="hidden" name="timestamp" value="${formatToSQLDateTimeParis(c[3])}">
+                            
+                                        <button type="submit" class="btn btn-sm btn-danger">Supprimer</button>
+                                    </form>
+                                </td>` : ''
+                        }
+                        </tr>
+                    `;
+                }).join('');
             }
+
         });
 }
+
+function formatToSQLDateTimeParis(dateString) {
+    const date = new Date(dateString);
+
+    const formatter = new Intl.DateTimeFormat('fr-FR', {
+        timeZone: 'Europe/Paris',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+    });
+
+    const parts = formatter.formatToParts(date);
+    const get = type => parts.find(p => p.type === type).value;
+
+    return `${get('year')}-${get('month')}-${get('day')} ${get('hour')-2}:${get('minute')}:${get('second')}`;
+}
+
+
+
+
+
 
 function updatePartyStats() {
     const partyIdInput = document.querySelector('input[name="party_id"]');
