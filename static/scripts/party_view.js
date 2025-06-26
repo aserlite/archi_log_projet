@@ -151,6 +151,15 @@ copyButton.addEventListener('click', function () {
                     pathPrimary.setAttribute('fill', '#fff');
                 }
             })
+            // revient à la normal au bout de 5 secondes
+            .then(() => {
+                setTimeout(() => {
+                    if (pathPrimary) {
+                        pathPrimary.setAttribute('stroke', '#fff');
+                        pathPrimary.setAttribute('fill', 'none');
+                    }
+                }, 5000);
+            })
             .catch(err => {
                 console.error('Erreur de copie :', err);
             });
