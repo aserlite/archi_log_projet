@@ -41,7 +41,7 @@ def calculer_taux_alcoolemie(user_id, party_id=None):
 
     instant_T = datetime.now()
     dose_alcool = 10  # en grammes par dose bar
-    elimination = 0.15  # en g/L/h (taux sanguin)
+    elimination = 0.1  # en g/L/h (taux sanguin)
 
     cursor = mysql.connection.cursor()
     user = User.get_by_id(cursor, user_id)
@@ -67,7 +67,6 @@ def calculer_taux_alcoolemie(user_id, party_id=None):
         heures_ecoulees = (instant_T - conso_time).total_seconds() / 3600
         if heures_ecoulees < 0:
             continue
-        # Calcul du taux par conso (corrigé)
         quantite = float(conso.quantité)
         taux_conso = (dose_alcool * quantite) / (float(poids) * float(coef)) - elimination * heures_ecoulees
         if taux_conso > 0:
