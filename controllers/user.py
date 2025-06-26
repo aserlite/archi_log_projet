@@ -10,16 +10,21 @@ def register():
         email = request.form.get("email")
         password = request.form.get("password")
         confirm = request.form.get("confirm")
+        if len(password) < 8:
+            return render_template("user/register.html", error="Le mot de passe doit contenir au moins 8 caractères")
         if password != confirm:
             return render_template("user/register.html", error="Les mots de passe ne correspondent pas")
-        âge = request.form.get("âge")
+        age = request.form.get("âge")
+        age = int(age)
+        if (age < 18):
+            return redirect('https://www.youtubekids.com/')
         poids = request.form.get("poids")
         genre = request.form.get("genre")
         password = hash_password(password)
         session_token = uuid.uuid4().hex
         try:
             with mysql.connection.cursor() as cur:
-                User.create(cur, pseudo, email, password, âge, poids, genre, session_token)
+                User.create(cur, pseudo, email, password, age, poids, genre, session_token)
                 mysql.connection.commit()
                 user_id = User.get_id_by_email(cur, email)
                 session["user_id"] = user_id
