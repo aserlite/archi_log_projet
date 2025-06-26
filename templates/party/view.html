@@ -95,6 +95,7 @@
                         <th>Heure</th>
                         <th>Commentaire</th>
                         <th>Qte</th>
+                        <th>retirer un verre</th>
                     </tr>
                 </thead>
                 <tbody id="history-table-body">
@@ -153,7 +154,9 @@
     }
 </style>
 {% endif %}
-
+<script>
+    window.partyStatus = "{{ party.status }}";
+</script>
 <script src="../static/scripts/party_view.js" defer></script>
 
 {% endblock %}

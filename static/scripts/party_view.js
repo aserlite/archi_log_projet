@@ -61,10 +61,10 @@ if (drinkSuggestions) {
 function updateHistoryTable() {
     const partyIdInput = document.querySelector('input[name="party_id"]');
     const userIdInput = document.querySelector('input[name="user_id"]');
-    //console.log(partyId);
     if (!partyIdInput) return;
     const partyId = partyIdInput.value;
     const userID = userIdInput.value;
+    const isFinished = window.partyStatus === "finished";
     fetch(`/party/${partyId}/history`)
         .then(response => response.json())
         .then(data => {
@@ -79,24 +79,37 @@ function updateHistoryTable() {
                             <td>${formatHour(c[3])}</td>
                             <td>${c[4]}</td>
                             <td>${c[5]}</td>
-                            ${isUser ? `
+                            ${(!isFinished && isUser) ? `
                                 <td>
                                     <form action="/party/delete_conso" method="post">
                                         <input type="hidden" name="id_user" value="${c[0]}">
                                         <input type="hidden" name="id_soiree" value="${c[6]}">
                                         <input type="hidden" name="id_boisson" value="${c[7]}">
                                         <input type="hidden" name="timestamp" value="${formatToSQLDateTimeParis(c[3])}">
-                            
                                         <button type="submit" class="btn btn-sm btn-danger">Supprimer</button>
                                     </form>
                                 </td>` : ''
-                        }
+                            }
                         </tr>
                     `;
                 }).join('');
             }
-
         });
+
+    const table = document.querySelector('#cell-historique table');
+    if (table) {
+        const ths = table.querySelectorAll('th');
+        if (ths.length > 5) {
+            ths[5].style.display = isFinished ? 'none' : '';
+        }
+        const trs = table.querySelectorAll('tbody tr');
+        trs.forEach(tr => {
+            const tds = tr.querySelectorAll('td');
+            if (tds.length > 5) {
+                tds[5].style.display = isFinished ? 'none' : '';
+            }
+        });
+    }
 }
 
 function formatToSQLDateTimeParis(dateString) {
@@ -118,10 +131,6 @@ function formatToSQLDateTimeParis(dateString) {
 
     return `${get('year')}-${get('month')}-${get('day')} ${get('hour')-2}:${get('minute')}:${get('second')}`;
 }
-
-
-
-
 
 
 function updatePartyStats() {

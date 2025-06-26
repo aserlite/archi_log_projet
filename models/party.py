@@ -139,8 +139,15 @@ class Party:
 
     @staticmethod
     def delete_entry(cursor, id_user, id_soiree, id_boisson, timestamp):
-            
-            cursor.execute("""
-                        DELETE FROM consommation 
-                        WHERE id_user = %s AND id_soiree = %s AND id_boisson = %s AND timestamp = %s
-                        """, (id_user, id_soiree, id_boisson, timestamp))
+        if hasattr(timestamp, "strftime"):
+            timestamp = timestamp.strftime('%Y-%m-%d %H:%M:%S')
+        sql = """
+              DELETE \
+              FROM consommation
+              WHERE id_user = %s
+                AND id_soiree = %s
+                AND id_boisson = %s
+                AND timestamp = %s \
+              """
+        cursor.execute(sql, (id_user, id_soiree, id_boisson, timestamp))
+        return cursor.rowcount

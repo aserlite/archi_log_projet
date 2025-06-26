@@ -1,3 +1,4 @@
+from models import party
 from models.party import Party
 from flask import jsonify, request, redirect, url_for, session, render_template
 from db import mysql
@@ -163,16 +164,17 @@ def get_participants_for_party(party_id):
 def delete_entry_history(id_user, id_soiree, id_boisson, timestamp):
     if not is_authenticated():
         return jsonify({"success": False, "error": "Non authentifié"}), 401
+    session_user_id = session.get("user_id")
+    if str(session_user_id) != str(id_user):
+        return jsonify({"success": False, "error": "Suppression non autorisée"}), 403
+
     try:
         with mysql.connection.cursor() as cur:
-            Party.delete_entry(cur, id_user, id_soiree, id_boisson, timestamp)
-            return jsonify({
-                "id_user": id_user,
-                "id_soiree": id_soiree,
-                "id_boisson": id_boisson,
-                "timestamp": timestamp,
-                "success": True
-            })
-        return redirect(url_for('view_party_route', party_id=id_soiree))
+            deleted = Party.delete_entry(cur, id_user, id_soiree, id_boisson, timestamp)
+            mysql.connection.commit()
+        if deleted:
+            return redirect(url_for('view_party_route', party_id=id_soiree))
+        else:
+            return jsonify({"success": False, "error": "Aucune ligne supprimée"})
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
