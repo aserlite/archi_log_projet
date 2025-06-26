@@ -136,3 +136,32 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 });
+
+// Copier le code d'invitation dans le presse-papier
+const copyButton = document.getElementById('logo_copier');
+const code = document.getElementById('party-invitation-code');
+const pathPrimary = document.getElementById('primary');
+
+copyButton.addEventListener('click', function () {
+    if (navigator.clipboard && code) {
+        navigator.clipboard.writeText(code.textContent.trim())
+            .then(() => {
+                if (pathPrimary) {
+                    pathPrimary.removeAttribute('stroke');
+                    pathPrimary.setAttribute('fill', '#fff');
+                }
+            })
+            // revient à la normal au bout de 5 secondes
+            .then(() => {
+                setTimeout(() => {
+                    if (pathPrimary) {
+                        pathPrimary.setAttribute('stroke', '#fff');
+                        pathPrimary.setAttribute('fill', 'none');
+                    }
+                }, 5000);
+            })
+            .catch(err => {
+                console.error('Erreur de copie :', err);
+            });
+    }
+});
