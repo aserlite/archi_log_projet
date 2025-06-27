@@ -6,6 +6,7 @@ import uuid
 
 def register():
     if request.method == "POST":
+        
         pseudo = request.form.get("pseudo")
         email = request.form.get("email")
         password = request.form.get("password")
@@ -22,9 +23,12 @@ def register():
         genre = request.form.get("genre")
         password = hash_password(password)
         session_token = uuid.uuid4().hex
+        image = request.form.get("profile_picture_base64")
+        if (image is None or image == ""):
+            image = "../../static/images/user.webp"
         try:
             with mysql.connection.cursor() as cur:
-                User.create(cur, pseudo, email, password, age, poids, genre, session_token)
+                User.create(cur, pseudo, email, password, age, poids, genre, session_token, image)
                 mysql.connection.commit()
                 user_id = User.get_id_by_email(cur, email)
                 session["user_id"] = user_id
@@ -127,6 +131,7 @@ def edit_profile():
         genre = request.form.get("genre")
         current_password = request.form.get("current_password")
         new_password = request.form.get("new_password")
+        new_image = request.form.get("profile_picture_base64")
         with mysql.connection.cursor() as cur:
             user = User.get_by_id(cur, user_id)
             if not user or user.password != hash_password(current_password):
@@ -135,8 +140,12 @@ def edit_profile():
                 password = hash_password(new_password)
             else:
                 password = user.password
+            if new_image:
+                image = new_image
+            else:
+                image = user.image 
             try:
-                User.update_profile(cur, user_id, pseudo, email, âge, poids, genre, password)
+                User.update_profile(cur, user_id, pseudo, email, âge, poids, genre, password, image)
                 mysql.connection.commit()
                 return render_template("user/profile.html", user=User.get_by_id(cur, user_id), success="Profil mis à jour avec succès.")
             except Exception as e:

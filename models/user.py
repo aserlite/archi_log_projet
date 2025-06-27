@@ -1,5 +1,5 @@
 class User:
-    def __init__(self, id_user, pseudo, email, password, âge, poids, genre, create_dt, session_token):
+    def __init__(self, id_user, pseudo, email, password, âge, poids, genre, create_dt, session_token, image):
         self.id_user = id_user
         self.pseudo = pseudo
         self.email = email
@@ -9,11 +9,12 @@ class User:
         self.genre = genre
         self.create_dt = create_dt
         self.session_token = session_token
+        self.image = image
 
     def __repr__(self):
         return (f"User(id_user={self.id_user}, pseudo={self.pseudo}, "
                 f"email={self.email}, password=****, âge={self.âge}, poids={self.poids}, "
-                f"genre={self.genre}, create_dt={self.create_dt}, session_token=****)")
+                f"genre={self.genre}, create_dt={self.create_dt}, session_token=****), image={self.image})")
 
     @staticmethod
     def get_all(cursor):
@@ -22,10 +23,10 @@ class User:
         return [User(*row) for row in rows]
 
     @staticmethod
-    def create(cursor, pseudo, email, password, âge, poids, genre, session_token):
+    def create(cursor, pseudo, email, password, âge, poids, genre, session_token, image):
         cursor.execute(
-            "INSERT INTO utilisateur (pseudo, email, password, âge, poids, genre, session_token) VALUES (%s, %s, %s, %s, %s, %s, %s)",
-            (pseudo, email, password, âge, poids, genre, session_token)
+            "INSERT INTO utilisateur (pseudo, email, password, âge, poids, genre, session_token, image) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
+            (pseudo, email, password, âge, poids, genre, session_token, image)
         )
 
     @staticmethod
@@ -67,10 +68,10 @@ class User:
         cursor.execute("DELETE FROM utilisateur WHERE id_user = %s", (id_user,))
 
     @staticmethod
-    def update_profile(cursor, id_user, pseudo, email, âge, poids, genre, password):
+    def update_profile(cursor, id_user, pseudo, email, âge, poids, genre, password, image):
         cursor.execute(
-            "UPDATE utilisateur SET pseudo=%s, email=%s, âge=%s, poids=%s, genre=%s, password=%s WHERE id_user=%s",
-            (pseudo, email, âge, poids, genre, password, id_user)
+            "UPDATE utilisateur SET pseudo=%s, email=%s, âge=%s, poids=%s, genre=%s, password=%s, image=%s WHERE id_user=%s",
+            (pseudo, email, âge, poids, genre, password, image, id_user)
         )
 
     @staticmethod

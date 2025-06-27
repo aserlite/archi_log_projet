@@ -37,7 +37,11 @@
             <p>Bienvenue ploucos, fais toi un compte !</p>
             {% endif %}
             <a href="{{ url_for('profile_route') }}">
-                <img src="../static/images/user.webp" alt="User Icon" id="user-icon"></a>
+            {% if user and user.image %}
+                <img src="{{ user.image }}" alt="User Icon" id="user-icon"></a>
+            {% else %}
+                <img src="{{ url_for('static', filename='images/user.webp') }}" alt="User Icon" id="user-icon"></a>
+            {% endif %}
         </div>
     </nav>
 

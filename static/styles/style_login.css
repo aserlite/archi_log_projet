@@ -17,6 +17,14 @@ form h1 {
     color: #f1f1f1;
 }
 
+#profile-picture{
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 1rem;
+}
+
 label {
     font-family: 'Inter';
 
@@ -30,6 +38,7 @@ input[type="email"],
 input[type="password"],
 input[type="text"],
 input[type="number"],
+input[type="file"],
 textarea{
     width: 100%;
     padding: 0.75rem;

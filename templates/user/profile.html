@@ -14,9 +14,13 @@
 {% endif %}
 
 <link rel="stylesheet" href="../static/styles/style_login.css">
+<script src="../../static/scripts/register.js"></script>
 
 <form method="post" action="{{ url_for('edit_profile_route') }}">
     <h2>Profil utilisateur</h2>
+    <img src="{{ user.image }}" alt="Photo de profil" id="profile-picture">
+    <label>Modifier la photo de profil:</label><input type="file" name="profile_picture_input" id="profile_picture_input" accept="image/*">
+    <input type="hidden" name="profile_picture_base64" id="profile_picture_base64">
     <label>Pseudo: </label><input type="text" name="pseudo" value="{{ user.pseudo }}" required>
     <label>Email : </label><input type="email" name="email" value="{{ user.email }}" required>
     <label>Âge : </label><input type="number" name="âge" value="{{ user.âge }}" required>
