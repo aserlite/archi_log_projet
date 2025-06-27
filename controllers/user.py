@@ -35,6 +35,8 @@ def register():
             else:
                 return redirect(url_for('index'))
         except Exception as e:
+            if(e.args[0] == 1062):
+                return render_template("user/register.html", error="L'email est déjà utilisé")
             return jsonify({"error": str(e)}), 500
     return render_template("user/register.html")
 

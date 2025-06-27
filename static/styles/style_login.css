@@ -73,7 +73,7 @@ button:hover {
     text-align: center;
 }
 
-p {
+p:not(#user p) {
     text-align: center;
     margin-top: 1rem;
     color: #bbb;
