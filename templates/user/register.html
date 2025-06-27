@@ -7,9 +7,15 @@
 <div class="alert alert-danger">{{ error }}</div>
 {% endif %}
 <link rel="stylesheet" href="../static/styles/style_register.css">
+<script src="../../static/scripts/register.js"></script>
+
 <form action="/register{% if request.args.get('code') %}?code={{ request.args.get('code') }}{% endif %}" method="post">
   <h2>Inscription</h2>
   <div class="form-group">
+
+    <label>Ajouter une photo de profil:</label>
+    <input id="profile_picture_input" type="file" name="profile_picture" accept="image/*">
+    <input type="hidden" name="profile_picture_base64" id="profile_picture_base64">
 
     <label for="pseudo">Pseudo:</label>
     <input type="text" id="pseudo" name="pseudo" required>
