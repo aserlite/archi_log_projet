@@ -1,6 +1,8 @@
 // Ajout d'une consommation (protégé si le formulaire existe)
 const addConsoForm = document.getElementById('add-conso-form');
+const drink_search = document.getElementById('drink-search');
 if (addConsoForm) {
+    if(drink_search != ""){}
     addConsoForm.addEventListener('submit', function (e) {
         e.preventDefault();
         const form = this;
@@ -15,6 +17,12 @@ if (addConsoForm) {
             .then(response => response.json())
             .then(result => {
                 if (result.success) {
+                    form.reset();
+                    document.getElementById('add_button').textContent = 'Verre ajouté !';
+                    setTimeout(() => {
+                        document.getElementById('add_button').textContent = 'Ajouter un verre';
+
+                    }, 2000);
                     updatePartyStats();
                     updateHistoryTable();
                 }
@@ -89,7 +97,7 @@ function updateHistoryTable() {
                                         <button type="submit" class="btn btn-sm btn-danger">Supprimer</button>
                                     </form>
                                 </td>` : ''
-                            }
+                        }
                         </tr>
                     `;
                 }).join('');
@@ -129,7 +137,7 @@ function formatToSQLDateTimeParis(dateString) {
     const parts = formatter.formatToParts(date);
     const get = type => parts.find(p => p.type === type).value;
 
-    return `${get('year')}-${get('month')}-${get('day')} ${get('hour')-2}:${get('minute')}:${get('second')}`;
+    return `${get('year')}-${get('month')}-${get('day')} ${get('hour') - 2}:${get('minute')}:${get('second')}`;
 }
 
 

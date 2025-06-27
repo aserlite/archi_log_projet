@@ -40,7 +40,7 @@
         <form id="add-conso-form" method="post" action="{{ url_for('add_conso_route') }}">
             <input type="hidden" name="party_id" value="{{ party.id_soiree }}">
             <div class="mb-3">
-                <input type="text" id="drink-search" class="form-control" autocomplete="off"
+                <input required type="text" id="drink-search" class="form-control" autocomplete="off"
                     placeholder="Rechercher une boisson...">
                 <div id="drink-suggestions" class="list-group"></div>
                 <button type="button" id="random-drink-btn" class="btn">Boisson aléatoire</button>
@@ -54,7 +54,7 @@
                 <label for="comment" class="form-label">Commentaire (optionnel) :</label>
                 <input type="text" name="comment" id="comment" class="form-control" maxlength="255">
             </div>
-            <button type="submit" class="btn btn-primary">Ajouter un verre</button>
+            <button type="submit" class="btn btn-primary" id="add_button">Ajouter un verre</button>
         </form>
     </div>
 
