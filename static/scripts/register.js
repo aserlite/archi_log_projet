@@ -29,7 +29,6 @@ document.addEventListener('DOMContentLoaded', function () {
             } while (base64.length > 1_048_576 && quality > 0.1);
 
             output.value = base64;
-            console.log('Compressed base64 size:', (base64.length / 1024).toFixed(1), 'KB');
         };
 
         reader.readAsDataURL(file);
