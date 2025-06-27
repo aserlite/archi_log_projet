@@ -9,7 +9,7 @@ load_dotenv()
 CORS(app)
 
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
-app.config["SERVER_NAME"] = "192.168.0.15:5000"
+app.config["SERVER_NAME"] = os.getenv('IP')
 app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024  # 50 MB
 app.config['MAX_FORM_MEMORY_SIZE'] = 50 * 1024 * 1024  # 50 MB
 
